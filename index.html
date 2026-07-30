@@ -2,6 +2,7 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
+    <!-- 🎯 全載具核心天線：加入最標準的縮放網頁視窗雷達，確保行動裝置完美適應 -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>巴比美語補習班 | 專屬學員報名系統</title>
     <style>
@@ -36,7 +37,7 @@
             padding: 30px 40px;
         }
 
-        /* 🎯 抬頭最上方動態智慧生產字樣（原樣原封不動，不破壞版面） */
+        /* 🎯 抬頭最上方動態智慧生產字樣 */
         .dynamic-top-banner {
             font-size: 15px;
             font-weight: bold;
@@ -138,7 +139,7 @@
             border-radius: 4px 4px 0 0;
         }
 
-        /* 🔒 守護方格地基：死死鎖定傳統表格排版，不使用任何手機端拆散方格的規則 */
+        /* 🔒 守護方格地基 */
         table {
             width: 100%;
             border-collapse: collapse;
@@ -406,7 +407,6 @@
             .extra-summer-box { border: 1px solid #666; background-color: transparent; }
         }
 
-        /* 改用橫向溢位自動縮放護盾，手機平板電腦 100% 畫面完美自適應 */
         @media (max-width: 768px) {
             body { padding: 8px; }
             .page { padding: 15px 10px; }
@@ -425,6 +425,7 @@
         <input type="hidden" id="formSubject" name="_subject" value="【專屬報名登記】巴比美語單一課程填報通知">
         <input type="hidden" id="printLinkInput" name="查看並印出完整A4報名表" value="">
 
+        <!-- 由核心大腦動態寫入 -->
         <input type="hidden" id="course_name_hidden" name="course_name" value="">
         <input type="hidden" id="class_time" name="class_time" value="">
         <input type="hidden" id="sub_tuition" name="sub_tuition" value="0">
@@ -489,11 +490,11 @@
                         <th><span class="zh-title">與學生關係</span><span class="en-title">Relationship</span></th>
                         <td><input type="text" name="relation" class="text-input" placeholder="" required></td>
                         <th><span class="zh-title">聯絡電話</span><span class="en-title">Phone Number</span></th>
-                        <td><input type="tel" name="phone" class="text-input" placeholder="主要聯絡手機" required></td>
+                        <td><input type="tel" name="phone" class="text-input" placeholder="0912345678" required></td>
                     </tr>
                     <tr>
                         <th><span class="zh-title">電子信箱</span><span class="en-title">E-mail</span></th>
-                        <td colspan="3"><input type="email" name="email" class="text-input" placeholder=""></td>
+                        <td colspan="3"><input type="email" name="email" class="text-input" placeholder="example@email.com"></td>
                         <th><span class="zh-title">LINE ID</span><span class="en-title">LINE ID</span></th>
                         <td><input type="text" name="line_id" class="text-input" placeholder="LINE ID"></td>
                     </tr>
@@ -633,7 +634,7 @@
                     </div>
                     <div class="signature-row">
                         <span>日期 Date</span>
-                        <input type="date" name="parent_sig_date" class="signature-input" required>
+                        <input type="date" name="parent_sig_date" id="parentSigDate" class="signature-input" required>
                     </div>
                 </div>
 
@@ -644,7 +645,7 @@
                     </div>
                     <div class="signature-row">
                         <span>日期 Date</span>
-                        <input type="date" name="teacher_sig_date" class="signature-input">
+                        <input type="date" name="teacher_sig_date" id="teacherSigDate" class="signature-input">
                     </div>
                 </div>
             </div>
@@ -659,7 +660,6 @@
 <script>
 // ===== 核心報名表對應資料庫 =====
 var courseDatabase = {
-    /* 🎯 核心課務時段修正：將原本混合的時段改裝成 Joy 指定的「每週星期一、三、五，下午4:30-6:30」 */
     "Let's Go 5": { label: "Let's Go 5 兒童高階美語 (中英雙語教學)", time: "每週星期一、三、五，下午4:30-6:30", lessons: 51, price: 620, materials: 1612, misc: 60 }
 };
 
@@ -668,7 +668,6 @@ var courseDatabase = {
 // ==========================================
 var TARGET_COURSE = "Let's Go 5"; 
 
-
 // 頁面初始化自動綁定與運算
 window.onload = function() {
     document.getElementById('course_name_hidden').value = TARGET_COURSE;
@@ -676,10 +675,13 @@ window.onload = function() {
     
     document.getElementById('mainTitleDisplay').innerHTML = "巴比美語補習班 ｜ " + TARGET_COURSE + " 專屬智慧報名系統";
     document.getElementById('subTitleDisplay').innerHTML = "Bobby English School - " + TARGET_COURSE + " Enrollment Form";
-    
-    // 🚀 任務 2 智慧生產天線：自動在抬頭最上方動態生成專屬報名系統文字
     document.getElementById('dynamicBannerDisplay').innerHTML = TARGET_COURSE + " 專屬智慧報名系統";
     
+    // 🎯 自動時光晶片：開啟頁面自動帶入當天日期
+    var today = new Date().toISOString().split('T')[0];
+    if (document.getElementById('parentSigDate')) document.getElementById('parentSigDate').value = today;
+    if (document.getElementById('teacherSigDate')) document.getElementById('teacherSigDate').value = today;
+
     calculateTuition();
 };
 
@@ -709,7 +711,6 @@ function calculateTuition() {
         document.getElementById('sub_materials').value = materialsTotal;
         document.getElementById('sub_misc').value = miscTotal;
         
-        // 🎯 黃金細節二修復：讓動態大腦實時計算時，把 "$" 符號牢牢綁在鮮紅色數字前方！
         totalInput.value = "$" + finalTotal;
 
         timeDisplay.innerText = course.time;
@@ -769,15 +770,18 @@ document.getElementById('enrollmentForm').addEventListener('submit', function(e)
     
     var googleAppsScriptUrl = "https://script.google.com/macros/s/AKfycbxt07hF-qkXePULEBjuCpzdWnaeNWsTlQV7dRhch_iBwtVePOIJzldTAsR0LothoQ1l/exec";
     
+    // 🎯 核心補強：加入 mode: 'no-cors' 避開瀏覽器跨域安全性連線阻斷
     fetch(googleAppsScriptUrl, {
         method: 'POST',
+        mode: 'no-cors',
         body: new URLSearchParams(new FormData(form))
     })
     .then(function() {
         alert("🎉 巴比美語：單一課程專屬雲端連線登記成功！");
         form.submit(); 
     })
-    .catch(function() {
+    .catch(function(error) {
+        console.warn("GAS Sync notice:", error);
         form.submit();
     });
 });
