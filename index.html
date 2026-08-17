@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <!-- 🎯 全載具核心天線：確保行動裝置與 A4 紙張列印排版 100% 完美自適應 -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>巴比美語補習班 | 專屬學員報名系統</title>
+    <title>巴比美語補習班 | 專屬學員報名系統 (Let's Go 5)</title>
     
     <!-- 引入專業雙語 Google Fonts 字型 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -162,7 +162,7 @@
             margin-bottom: 15px;
         }
 
-        /* 🔒 三大表格邊框防護：採用 collapse 演算法與實體深藍色 (#1b3d6d) */
+        /* 🔒 邊框顯色修復：三大主題下方表格外框與內部格線全數強制補上實體深藍色 (#1b3d6d !important)！ */
         table {
             width: 100%;
             border-collapse: collapse !important;
@@ -170,6 +170,8 @@
             font-size: 13px;
             table-layout: fixed;
             border: 1px solid #1b3d6d !important;
+            border-radius: 0px;
+            overflow: hidden;
             background-color: #ffffff;
         }
 
@@ -231,11 +233,11 @@
             font-size: 13.5px;
         }
 
-        /* 出生年月日及小日曆圖檔靠右預留安全距離 */
+        /* 🎯 DOB 靠右微調：靠右對齊且預留 12px 安全距離，100% 絕不碰到右邊框線！ */
         input[type="date"].text-input {
             display: block; 
             line-height: normal;
-            padding: 2px 8px 2px 2px !important;
+            padding: 2px 12px 2px 2px !important;
             font-size: 11.5px !important;
             letter-spacing: -0.2px;
             text-align: right !important;
@@ -544,6 +546,7 @@
                         </tr>
                         <tr>
                             <th><span class="zh-title">出生日期</span><span class="en-title">Date of Birth</span></th>
+                            <!-- 🎯 DOB 靠右且留 12px 防撞氣墊，絕不碰撞右邊框線！ -->
                             <td><input type="date" name="dob" class="text-input" required></td>
                             <th><span class="zh-title">就讀學校</span><span class="en-title">School</span></th>
                             <td><input type="text" name="school" class="text-input" placeholder=""></td>
@@ -560,15 +563,12 @@
                             <th><span class="zh-title">與學生關係</span><span class="en-title">Relationship</span></th>
                             <td><input type="text" name="relation" class="text-input" placeholder="" required></td>
                             <th><span class="zh-title">聯絡電話</span><span class="en-title">Phone Number</span></th>
-                            <!-- 🎯 精準修改 1：移除 placeholder="0912345678" -->
                             <td><input type="tel" name="phone" class="text-input" placeholder="" required></td>
                         </tr>
                         <tr>
                             <th><span class="zh-title">電子信箱</span><span class="en-title">E-mail</span></th>
-                            <!-- 🎯 精準修改 2：移除 placeholder="example@email.com" -->
                             <td colspan="3"><input type="email" name="email" class="text-input" placeholder=""></td>
                             <th><span class="zh-title">LINE ID</span><span class="en-title">LINE ID</span></th>
-                            <!-- 🎯 精準修改 3：移除 placeholder="LINE ID" -->
                             <td><input type="text" name="line_id" class="text-input" placeholder=""></td>
                         </tr>
                         <tr>
@@ -589,8 +589,7 @@
                                 <div id="courseLabelDisplay" class="static-course-display">未設定課程</div>
                             </td>
                             <th><span class="zh-title">標準上課時段</span><span class="en-title">Schedule</span></th>
-                            <!-- 🎯 幾何上下左右完全置中結構 -->
-                            <td colspan="2" id="timeDisplay" style="font-weight: bold; color: var(--uci-blue); padding: 0; height: 100%;">載入中...</td>
+                            <td colspan="2" id="timeDisplay" style="padding: 0; text-align: center; vertical-align: middle;">載入中...</td>
                         </tr>
                         <tr id="standardDiscountRow">
                             <th><span class="zh-title">優惠方案配置</span><span class="en-title">Discount Plan</span></th>
@@ -599,7 +598,8 @@
                                     <label><input type="radio" name="discount_plan" value="1.0" checked onchange="calculateTuition()"> 常態收費原價 (Full Price)</label>
                                     <label><input type="radio" name="discount_plan" value="0.9" onchange="calculateTuition()"> 9 折優惠 (10% OFF)</label>
                                     <label><input type="radio" name="discount_plan" value="0.85" onchange="calculateTuition()"> 85 折優惠 (15% OFF)</label>
-                                    <label><input type="radio" name="discount_plan" value="0.8" onchange="calculateTuition()"> ✨ 老朋友 8 折 (20% OFF)</label>
+                                    <!-- 🎯 已同步刪除「老朋友」字樣，保留「✨ 8 折優惠」 -->
+                                    <label><input type="radio" name="discount_plan" value="0.8" onchange="calculateTuition()"> ✨ 8 折優惠 (20% OFF)</label>
                                 </div>
                             </td>
                         </tr>
@@ -742,7 +742,7 @@
 var courseDatabase = {
     "Let's Go 5": { 
         label: "Let's Go 5 兒童高階美語", 
-        time: "<div style='display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; height:100%; width:100%;'><div style='font-weight:800; color:var(--uci-blue); font-size:13px; line-height:1.2;'><span class='no-orphan'>每週一、三、五</span></div><div style='font-weight:700; color:var(--uci-blue); font-size:11.5px; line-height:1.2; margin-top:3px;'><span class='no-orphan'>4:30 PM - 6:30 PM</span></div></div>", 
+        time: "<div style='display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding: 4px 0;'><div style='font-weight:800; color:var(--uci-blue); font-size:13px; line-height:1.2;'><span class='no-orphan'>每週一、三、五</span></div><div style='font-weight:700; color:var(--uci-blue); font-size:11.5px; line-height:1.2; margin-top:3px;'><span class='no-orphan'>4:30 PM - 6:30 PM</span></div></div>", 
         lessons: 51, price: 620, materials: 1612, misc: 60 
     }
 };
@@ -787,11 +787,15 @@ function calculateTuition() {
             var activeRadio = document.querySelector('input[name="discount_plan"]:checked');
             if (activeRadio) discountRate = parseFloat(activeRadio.value);
 
-            var tuitionTotal = course.price * course.lessons;
-            var materialsTotal = course.materials;
-            var miscTotal = course.misc * course.lessons;
+            var tuitionTotal = course.price * course.lessons; // 620 * 51 = 31,620
+            var materialsTotal = course.materials;           // 1,612
+            var miscTotal = course.misc * course.lessons;     // 60 * 51 = 3,060
             
-            var finalTotal = Math.round((tuitionTotal + miscTotal) * discountRate + materialsTotal);
+            // 全項目未折總計 = 31,620 + 1,612 + 3,060 = 36,292
+            var subTotal = tuitionTotal + materialsTotal + miscTotal;
+            
+            // 🎯 核心修正：全項目（學費＋教材＋雜費）一律連動乘上折扣率並四捨五入！
+            var finalTotal = Math.round(subTotal * discountRate);
 
             document.getElementById('sub_tuition').value = tuitionTotal;
             document.getElementById('sub_materials').value = materialsTotal;
@@ -799,13 +803,19 @@ function calculateTuition() {
             
             totalInput.value = "$" + finalTotal;
             timeDisplay.innerHTML = course.time;
-            var discountLabel = discountRate === 0.8 ? " <span style='color:red;'>(尊榮老朋友8折)</span>" : " (常態運算)";
+            
+            // 🎯 折扣顯示標籤修正：轉換為 85折, 8折，去除老朋友字樣
+            var discountStr = (discountRate * 100).toString();
+            if (discountRate === 0.9) discountStr = "9";
+            if (discountRate === 0.8) discountStr = "8";
+            
+            var discountLabel = discountRate === 0.8 ? " <span style='color:red;'>(尊榮8折)</span>" : " (常態運算)";
 
-            calcPreview.innerHTML = "📚 <b>" + courseKey + " 費用拆解明細" + discountLabel + "</b>：<br>" +
+            calcPreview.innerHTML = "📚 <b>" + courseKey + " 全項目折扣拆解明細" + discountLabel + "</b>：<br>" +
                                     "基本學費：$" + course.price + " × " + course.lessons + "堂 = $" + tuitionTotal + " | " +
-                                    "固定教材費：$" + materialsTotal + " | " +
+                                    "原價教材費：$" + materialsTotal + " | " +
                                     "學雜費：$" + course.misc + " × " + course.lessons + "堂 = $" + miscTotal + "<br>" +
-                                    "👉 <b>應繳實際總計金額：NT$ " + finalTotal + " 元</b>";
+                                    "👉 <b>全項目（學費＋教材＋雜費）套用 " + discountStr + " 折後實際總計：NT$ " + finalTotal + " 元</b>";
         }
     } catch (err) {
         console.error("Tuition calculation error resolved:", err);
