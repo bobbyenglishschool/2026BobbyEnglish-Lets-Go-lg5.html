@@ -809,13 +809,15 @@ function calculateTuition() {
             if (discountRate === 0.9) discountStr = "9";
             if (discountRate === 0.8) discountStr = "8";
             
-            var discountLabel = discountRate === 0.8 ? " <span style='color:red;'>(尊榮8折)</span>" : " (常態運算)";
+            // 🎯 語意優化轉換：原價不顯示「套用 100 折」，改為「未套用額外優惠（維持原價）」
+            var discountText = discountRate === 1.0 ? "未套用額外優惠（維持原價）" : "套用 " + discountStr + " 折";
+            var discountLabel = discountRate === 0.8 ? " <span style='color:red;'>(尊榮8折)</span>" : "";
 
-            calcPreview.innerHTML = "📚 <b>" + courseKey + " 全項目折扣拆解明細" + discountLabel + "</b>：<br>" +
+            calcPreview.innerHTML = "📚 <b>" + courseKey + " 費用明細與折扣說明" + discountLabel + "</b>：<br>" +
                                     "基本學費：$" + course.price + " × " + course.lessons + "堂 = $" + tuitionTotal + " | " +
                                     "原價教材費：$" + materialsTotal + " | " +
                                     "學雜費：$" + course.misc + " × " + course.lessons + "堂 = $" + miscTotal + "<br>" +
-                                    "👉 <b>全項目（學費＋教材＋雜費）套用 " + discountStr + " 折後實際總計：NT$ " + finalTotal + " 元</b>";
+                                    "👉 <b>全項目（學費＋教材＋雜費）" + discountText + "後實際總計：NT$ " + finalTotal + " 元</b>";
         }
     } catch (err) {
         console.error("Tuition calculation error resolved:", err);
