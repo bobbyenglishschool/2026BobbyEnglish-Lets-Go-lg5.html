@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <!-- 🎯 全載具核心天線：確保行動裝置與 A4 紙張列印排版 100% 完美自適應 -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>巴比美語補習班 | 專屬學員報名系統 (Let's Go 5)</title>
+    <title>私立巴比美語短期補習班 | 專屬學員報名系統 (Let's Go 5)</title>
     
     <!-- 引入專業雙語 Google Fonts 字型 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,7 +17,7 @@
             --uci-gold: #fecc07;
             --soft-red: #e74c3c;
             --card-bg: #f8fafc;
-            --border-color: #cbd5e1;
+            --border-color: #1b3d6d; /* 🎯 強制導向巴比深藍 */
             --text-main: #1e293b;
             --text-sub: #475569;
         }
@@ -107,7 +107,7 @@
         .photo-box {
             width: 2in;
             height: 2in;
-            border: 2px solid var(--uci-blue);
+            border: 2px solid var(--uci-blue) !important;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -154,7 +154,6 @@
             border-radius: 6px 6px 0 0;
         }
 
-        /* 表格行動端包裹容器 */
         .table-responsive-wrapper {
             width: 100%;
             overflow-x: auto;
@@ -162,7 +161,7 @@
             margin-bottom: 15px;
         }
 
-        /* 🔒 邊框顯色修復：三大主題下方表格外框與內部格線全數強制補上實體深藍色 (#1b3d6d !important)！ */
+        /* 🔒 Aegis 核心 UI 規範 1：所有表格與內格線 100% 飽滿巴比深藍色實體化 */
         table {
             width: 100%;
             border-collapse: collapse !important;
@@ -227,17 +226,35 @@
             justify-content: flex-start;
         }
 
+        /* 🎯 Aegis 核心 UI 規範 5：選讀班別拆解兩行、去「班」字、100% 幾何精準居中 */
         .static-course-display {
             font-weight: bold;
             color: var(--uci-blue);
             font-size: 13.5px;
+            display: flex;
+            flex-direction: column;
+            align-items: center !important;
+            justify-content: center !important;
+            text-align: center !important;
+            line-height: 1.3;
+            padding: 4px 0;
+        }
+        
+        .static-course-display .course-id {
+            font-size: 14px;
+            font-weight: 800;
+        }
+        .static-course-display .course-zh {
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 2px;
         }
 
-        /* 🎯 DOB 靠右微調：靠右對齊且預留 12px 安全距離，100% 絕不碰到右邊框線！ */
+        /* 🎯 Aegis 核心 UI 規範 2：DOB 原生 Date Picker 靠右置中並預留 12px 安全氣墊防撞 */
         input[type="date"].text-input {
             display: block; 
             line-height: normal;
-            padding: 2px 12px 2px 2px !important;
+            padding-right: 12px !important;
             font-size: 11.5px !important;
             letter-spacing: -0.2px;
             text-align: right !important;
@@ -246,7 +263,6 @@
             box-sizing: border-box;
         }
 
-        /* 收據編號右邊填空欄字體縮小 */
         input[name="receipt_no"].text-input {
             font-size: 11.5px !important;
             padding: 4px 6px;
@@ -312,7 +328,6 @@
             line-height: 1.6;
         }
 
-        /* 第二頁條款美化升級區塊 */
         .terms-header {
             text-align: center;
             color: var(--uci-blue);
@@ -334,6 +349,9 @@
             text-align: justify;
             line-height: 1.65;
             box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+            border-top: 1px solid #1b3d6d !important;
+            border-right: 1px solid #1b3d6d !important;
+            border-bottom: 1px solid #1b3d6d !important;
         }
 
         .terms-list {
@@ -348,7 +366,7 @@
             background: #ffffff;
             padding: 10px 14px;
             border-radius: 6px;
-            border: 1px solid var(--border-color);
+            border: 1px solid #1b3d6d !important;
         }
 
         .terms-list strong {
@@ -376,7 +394,7 @@
         .signature-box {
             flex: 1;
             width: 50%; 
-            border: 1.5px solid var(--uci-blue);
+            border: 1.5px solid var(--uci-blue) !important;
             padding: 16px;
             border-radius: 8px;
             background-color: #fafbfc;
@@ -451,7 +469,7 @@
 
         .extra-summer-box {
             background-color: #f9fbfd;
-            border: 1px solid #bde0fe;
+            border: 1px solid #1b3d6d !important;
             padding: 15px;
             margin-top: 15px;
             border-radius: 6px;
@@ -460,7 +478,7 @@
         }
 
         .extra-summer-title {
-            color: #0077b6;
+            color: var(--uci-blue);
             font-weight: bold;
             margin-bottom: 10px;
             font-size: 14px;
@@ -473,7 +491,7 @@
             .page1 { break-after: page; }
             .page { padding: 0; }
             .submit-btn-container { display: none !important; }
-            .extra-summer-box { border: 1px solid #666; background-color: transparent; }
+            .extra-summer-box { border: 1px solid #1b3d6d !important; background-color: transparent; }
             table, th, td { border: 1px solid #1b3d6d !important; }
         }
 
@@ -510,7 +528,7 @@
 
             <div class="header-section">
                 <div class="title-area">
-                    <h1 class="main-title" id="mainTitleDisplay">巴比美語補習班 ｜ 全能智慧校務報名系統</h1>
+                    <h1 class="main-title" id="mainTitleDisplay">私立巴比美語短期補習班 ｜ 全能智慧校務報名系統</h1>
                     <h2 class="sub-title" id="subTitleDisplay">Bobby English School - Smart Course Enrollment Form</h2>
                     <div class="contact-info">
                         <p><strong>電話 / Phone：</strong>03-2161338</p>
@@ -586,6 +604,7 @@
                         <tr>
                             <th><span class="zh-title">就讀班別</span><span class="en-title">Course</span></th>
                             <td colspan="2">
+                                <!-- 🎯 Aegis 核心 UI 規範 3 & 5：選讀班別拆解兩行、去「班」字、100% 精準居中 -->
                                 <div id="courseLabelDisplay" class="static-course-display">未設定課程</div>
                             </td>
                             <th><span class="zh-title">標準上課時段</span><span class="en-title">Schedule</span></th>
@@ -598,7 +617,7 @@
                                     <label><input type="radio" name="discount_plan" value="1.0" checked onchange="calculateTuition()"> 常態收費原價 (Full Price)</label>
                                     <label><input type="radio" name="discount_plan" value="0.9" onchange="calculateTuition()"> 9 折優惠 (10% OFF)</label>
                                     <label><input type="radio" name="discount_plan" value="0.85" onchange="calculateTuition()"> 85 折優惠 (15% OFF)</label>
-                                    <!-- 🎯 已同步刪除「老朋友」字樣，保留「✨ 8 折優惠」 -->
+                                    <!-- 🎯 已同步刪除「老朋友」字樣，統一為「✨ 8 折優惠」 -->
                                     <label><input type="radio" name="discount_plan" value="0.8" onchange="calculateTuition()"> ✨ 8 折優惠 (20% OFF)</label>
                                 </div>
                             </td>
@@ -741,7 +760,8 @@
 // ===== 核心報名表對應資料庫 =====
 var courseDatabase = {
     "Let's Go 5": { 
-        label: "Let's Go 5 兒童高階美語", 
+        id: "Let's Go 5",
+        zhName: "兒童高階美語", 
         time: "<div style='display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding: 4px 0;'><div style='font-weight:800; color:var(--uci-blue); font-size:13px; line-height:1.2;'><span class='no-orphan'>每週一、三、五</span></div><div style='font-weight:700; color:var(--uci-blue); font-size:11.5px; line-height:1.2; margin-top:3px;'><span class='no-orphan'>4:30 PM - 6:30 PM</span></div></div>", 
         lessons: 51, price: 620, materials: 1612, misc: 60 
     }
@@ -758,14 +778,14 @@ window.onload = function() {
     document.getElementById('formSubject').value = "【巴比單一課程報名】" + TARGET_COURSE + " 報名通知";
     
     // 🚀 抬頭自動變魔術晶片：主標題與動態 Banner 自動連動
-    document.getElementById('mainTitleDisplay').innerHTML = "巴比美語補習班 ｜ " + TARGET_COURSE + " 專屬智慧報名系統";
+    document.getElementById('mainTitleDisplay').innerHTML = "私立巴比美語短期補習班 ｜ " + TARGET_COURSE + " 專屬智慧報名系統";
     document.getElementById('subTitleDisplay').innerHTML = "Bobby English School - " + TARGET_COURSE + " Enrollment Form";
     document.getElementById('dynamicBannerDisplay').innerHTML = TARGET_COURSE + " 專屬智慧報名系統";
     
     // 🎯 自動時光天線：自動帶入當天日期至家長與老師簽名處
     var today = new Date().toISOString().split('T')[0];
-    if(document.getElementById('parentSigDate')) document.getElementById('parentSigDate').value = today;
-    if(document.getElementById('teacherSigDate')) document.getElementById('teacherSigDate').value = today;
+    if (document.getElementById('parentSigDate')) document.getElementById('parentSigDate').value = today;
+    if (document.getElementById('teacherSigDate')) document.getElementById('teacherSigDate').value = today;
 
     calculateTuition();
 };
@@ -780,7 +800,9 @@ function calculateTuition() {
 
         if (courseDatabase[courseKey]) {
             var course = courseDatabase[courseKey];
-            labelDisplay.innerText = course.label;
+            
+            // 🎯 核心 UI 規範：兩行拆解去「班」字雙行呈現
+            labelDisplay.innerHTML = "<div class='course-id'>" + course.id + "</div><div class='course-zh'>" + course.zhName + "</div>";
             document.getElementById('class_time').value = "每週一三五 4:30-6:30 PM";
             
             var discountRate = 1.0;
@@ -797,27 +819,26 @@ function calculateTuition() {
             // 🎯 核心修正：全項目（學費＋教材＋雜費）一律連動乘上折扣率並四捨五入！
             var finalTotal = Math.round(subTotal * discountRate);
 
-            document.getElementById('sub_tuition').value = tuitionTotal;
-            document.getElementById('sub_materials').value = materialsTotal;
-            document.getElementById('sub_misc').value = miscTotal;
+            // 🎯 後端 GAS 傳遞欄位自動扣算同等折扣，達到三表與後端 100% 絕對咬合！
+            document.getElementById('sub_tuition').value = Math.round(tuitionTotal * discountRate);
+            document.getElementById('sub_materials').value = Math.round(materialsTotal * discountRate);
+            document.getElementById('sub_misc').value = Math.round(miscTotal * discountRate);
             
             totalInput.value = "$" + finalTotal;
             timeDisplay.innerHTML = course.time;
             
             // 🎯 折扣顯示標籤修正：轉換為 85折, 8折，去除老朋友字樣
-            var discountStr = (discountRate * 100).toString();
-            if (discountRate === 0.9) discountStr = "9";
-            if (discountRate === 0.8) discountStr = "8";
+            var discountStr = (discountRate * 10).toString();
+            if (discountRate === 1.0) discountStr = "10";
             
-            // 🎯 語意優化轉換：原價不顯示「套用 100 折」，改為「未套用額外優惠（維持原價）」
             var discountText = discountRate === 1.0 ? "未套用額外優惠（維持原價）" : "套用 " + discountStr + " 折";
-            var discountLabel = discountRate === 0.8 ? " <span style='color:red;'>(尊榮8折)</span>" : "";
+            var discountLabel = discountRate === 0.8 ? " <span style='color:red;'>(享8折特惠)</span>" : "";
 
             calcPreview.innerHTML = "📚 <b>" + courseKey + " 費用明細與折扣說明" + discountLabel + "</b>：<br>" +
-                                    "基本學費：$" + course.price + " × " + course.lessons + "堂 = $" + tuitionTotal + " | " +
-                                    "原價教材費：$" + materialsTotal + " | " +
-                                    "學雜費：$" + course.misc + " × " + course.lessons + "堂 = $" + miscTotal + "<br>" +
-                                    "👉 <b>全項目（學費＋教材＋雜費）" + discountText + "後實際總計：NT$ " + finalTotal + " 元</b>";
+                                    "基本學費：$" + course.price + " × " + course.lessons + "堂 = $" + tuitionTotal.toLocaleString() + " | " +
+                                    "原價教材費：$" + materialsTotal.toLocaleString() + " | " +
+                                    "學雜費：$" + course.misc + " × " + course.lessons + "堂 = $" + miscTotal.toLocaleString() + "<br>" +
+                                    "👉 <b>全項目（學費＋教材＋雜費）" + discountText + "後實際總計：NT$ " + finalTotal.toLocaleString() + " 元</b>";
         }
     } catch (err) {
         console.error("Tuition calculation error resolved:", err);
