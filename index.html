@@ -416,7 +416,7 @@
         .canvas-container {
             position: relative;
             width: 100%;
-            height: 110px;
+            height: 120px;
             background: #fff;
             border: 1px dashed var(--uci-blue);
             border-radius: 6px;
@@ -428,6 +428,7 @@
             height: 100%;
             cursor: crosshair;
             touch-action: none;
+            display: block;
         }
 
         .btn-clear-sig {
@@ -487,23 +488,6 @@
             transform: none !important;
         }
 
-        .extra-summer-box {
-            background-color: #f9fbfd;
-            border: 1px solid #1b3d6d !important;
-            padding: 15px;
-            margin-top: 15px;
-            border-radius: 6px;
-            display: none;
-            text-align: left;
-        }
-
-        .extra-summer-title {
-            color: var(--uci-blue);
-            font-weight: bold;
-            margin-bottom: 10px;
-            font-size: 14px;
-        }
-
         @media print {
             @page { size: A4 portrait; margin: 10mm 15mm; }
             body { background-color: transparent; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
@@ -511,7 +495,6 @@
             .page1 { break-after: page; }
             .page { padding: 0; }
             .submit-btn-container { display: none !important; }
-            .extra-summer-box { border: 1px solid #1b3d6d !important; background-color: transparent; }
             table, th, td { border: 1px solid #1b3d6d !important; }
         }
 
@@ -774,7 +757,7 @@ var courseDatabase = {
 
 var TARGET_COURSE = "Let's Go 5"; 
 
-// 🎨 畫布與簽名板動態邏輯
+// 🎨 畫布與簽名板動態邏輯（已完美修復畫筆設定）
 var parentCanvas, staffCanvas;
 var parentCtx, staffCtx;
 var isDrawingParent = false, isDrawingStaff = false;
@@ -798,8 +781,8 @@ function initSignaturePads() {
     parentCanvas = document.getElementById('parentSigPad');
     staffCanvas = document.getElementById('staffSigPad');
     
-    resizeCanvas(parentCanvas);
-    resizeCanvas(staffCanvas);
+    setupCanvas(parentCanvas);
+    setupCanvas(staffCanvas);
 
     parentCtx = parentCanvas.getContext('2d');
     staffCtx = staffCanvas.getContext('2d');
@@ -808,54 +791,60 @@ function initSignaturePads() {
     setupPadEvents(staffCanvas, staffCtx, function(drawing) { isDrawingStaff = drawing; });
 }
 
-function resizeCanvas(canvas) {
-    var rect = canvas.getBoundingClientRect();
+function setupCanvas(canvas) {
+    var rect = canvas.parentElement.getBoundingClientRect();
     canvas.width = rect.width || 300;
-    canvas.height = rect.height || 110;
+    canvas.height = rect.height || 120;
 }
 
 function setupPadEvents(canvas, ctx, setDrawingState) {
-    ctx.strokeStyle = "#1b3d6d";
-    ctx.lineWidth = 2.5;
-    ctx.lineCap = "round";
+    function resetCtxStyle() {
+        ctx.strokeStyle = "#1b3d6d";
+        ctx.lineWidth = 2.5;
+        ctx.lineCap = "round";
+        ctx.lineJoin = "round";
+    }
 
     function getPos(e) {
         var rect = canvas.getBoundingClientRect();
-        var clientX = e.touches ? e.touches[0].clientX : e.clientX;
-        var clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        var clientX = e.clientX || (e.touches && e.touches[0].clientX);
+        var clientY = e.clientY || (e.touches && e.touches[0].clientY);
         return { x: clientX - rect.left, y: clientY - rect.top };
     }
 
     canvas.addEventListener('mousedown', function(e) {
         setDrawingState(true);
+        resetCtxStyle();
         var pos = getPos(e);
         ctx.beginPath();
         ctx.moveTo(pos.x, pos.y);
     });
 
     canvas.addEventListener('mousemove', function(e) {
-        var pos = getPos(e);
-        ctx.lineTo(pos.x, pos.y);
-        ctx.stroke();
+        if ((canvas.id === 'parentSigPad' && isDrawingParent) || (canvas.id === 'staffSigPad' && isDrawingStaff)) {
+            var pos = getPos(e);
+            ctx.lineTo(pos.x, pos.y);
+            ctx.stroke();
+        }
     });
 
-    canvas.addEventListener('mouseup', function() { setDrawingState(false); });
-    canvas.addEventListener('mouseleave', function() { setDrawingState(false); });
+    window.addEventListener('mouseup', function() { setDrawingState(false); });
 
     canvas.addEventListener('touchstart', function(e) {
-        e.preventDefault();
         setDrawingState(true);
+        resetCtxStyle();
         var pos = getPos(e);
         ctx.beginPath();
         ctx.moveTo(pos.x, pos.y);
-    });
+    }, { passive: true });
 
     canvas.addEventListener('touchmove', function(e) {
-        e.preventDefault();
-        var pos = getPos(e);
-        ctx.lineTo(pos.x, pos.y);
-        ctx.stroke();
-    });
+        if ((canvas.id === 'parentSigPad' && isDrawingParent) || (canvas.id === 'staffSigPad' && isDrawingStaff)) {
+            var pos = getPos(e);
+            ctx.lineTo(pos.x, pos.y);
+            ctx.stroke();
+        }
+    }, { passive: true });
 
     canvas.addEventListener('touchend', function() { setDrawingState(false); });
 }
@@ -938,7 +927,6 @@ function processImageUpload(input) {
             img.className = 'preview-img';
             container.appendChild(img);
 
-            // 轉為 Base64 並存至隱藏欄位
             document.getElementById('student_photo_base64').value = e.target.result;
         };
         reader.readAsDataURL(input.files[0]);
@@ -955,7 +943,6 @@ document.getElementById('enrollmentForm').addEventListener('submit', function(e)
         return;
     }
 
-    // 簽名轉 Base64
     document.getElementById('parent_signature_base64').value = parentCanvas.toDataURL("image/png");
     if (!isCanvasBlank(staffCanvas)) {
         document.getElementById('staff_signature_base64').value = staffCanvas.toDataURL("image/png");
