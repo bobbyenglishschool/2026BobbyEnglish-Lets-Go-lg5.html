@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>私立巴比美語短期補習班 | 專屬學員報名系統 (Let's Go 3)</title>
+    <title>私立巴比美語短期補習班 | 專屬學員報名系統 (Let's Go 5)</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,7 +14,7 @@
             --uci-blue: #1b3d6d;
             --uci-gold: #fecc07;
             --soft-red: #e74c3c;
-            --lg3-blue: #0077b6; /* 💙 Let's Go 3 專屬蔚藍色晶片 */
+            --lg5-orange: #f39c12; /* 🧡 Let's Go 5 專屬招牌橘色晶片 */
             --card-bg: #f8fafc;
             --border-color: #1b3d6d;
             --text-main: #1e293b;
@@ -80,7 +80,7 @@
         .success-icon { font-size: 60px; color: #27ae60; margin-bottom: 15px; }
         .success-title { color: var(--uci-blue); font-size: 24px; font-weight: 800; margin-bottom: 10px; }
         .success-subtitle { color: var(--text-sub); font-size: 15px; margin-bottom: 30px; }
-        .brand-quote-box { background: linear-gradient(135deg, #f8fafc 0%, #e6f0fa 100%); border: 2px solid var(--uci-blue); border-left: 6px solid var(--lg3-blue); border-radius: 10px; padding: 25px 20px; margin: 0 auto 30px auto; max-width: 650px; text-align: center; box-shadow: 0 4px 12px rgba(27, 61, 109, 0.08); }
+        .brand-quote-box { background: linear-gradient(135deg, #f8fafc 0%, #e6f0fa 100%); border: 2px solid var(--uci-blue); border-left: 6px solid var(--lg5-orange); border-radius: 10px; padding: 25px 20px; margin: 0 auto 30px auto; max-width: 650px; text-align: center; box-shadow: 0 4px 12px rgba(27, 61, 109, 0.08); }
         .brand-quote-en { color: var(--uci-blue); font-size: 18px; font-weight: 800; line-height: 1.4; margin-bottom: 12px; letter-spacing: 0.3px; }
         .brand-quote-zh { color: var(--text-main); font-size: 15px; font-weight: 700; line-height: 1.6; }
         .brand-quote-sub { color: var(--text-sub); font-size: 12.5px; margin-top: 10px; font-style: italic; }
@@ -96,7 +96,7 @@
     <form id="enrollmentForm">
         <input type="hidden" name="series" value="LetsGo">
         <input type="hidden" name="formType" value="registration">
-        <input type="hidden" id="course_name_hidden" name="course_name" value="Let's Go 3">
+        <input type="hidden" id="course_name_hidden" name="course_name" value="Let's Go 5">
         <input type="hidden" id="class_time" name="class_time" value="">
         <input type="hidden" id="sub_tuition" name="sub_tuition" value="0">
         <input type="hidden" id="sub_materials" name="sub_materials" value="0">
@@ -327,11 +327,11 @@
     <div id="successScreen">
         <div class="success-icon">🎉</div>
         <h2 class="success-title">報名資料已成功傳送！</h2>
-        <p class="success-subtitle">謝謝您完成 Let's Go 3 課程的線上報名，我們非常期待與孩子一同踏上自信表達的學習之旅！</p>
+        <p class="success-subtitle">謝謝您完成 Let's Go 5 課程的線上報名，我們非常期待與孩子一同踏上卓越的學習之旅！</p>
         
         <div class="brand-quote-box">
-            <div class="brand-quote-en">"Speak with Confidence! From Learning Rules to Speaking with Absolute Confidence."</div>
-            <div class="brand-quote-zh">✨ 聽說讀寫全方位！與巴比美語攜手解鎖孩子自信表達的超能力！ ✨</div>
+            <div class="brand-quote-en">"The Gateway to Excellence! Advanced Reading, Grammar Logic & Paragraph Writing."</div>
+            <div class="brand-quote-zh">✨ 邁向卓越！與巴比美語攜手啟動高級美語閱讀、文法邏輯與寫作超能力！ ✨</div>
             <div class="brand-quote-sub">Bobby English School — Guiding Students Toward Academic Literacy & Confidence.</div>
         </div>
 
@@ -341,15 +341,15 @@
 
 <script>
 var courseDatabase = {
-    "Let's Go 3": { 
-        id: "Let's Go 3",
-        zhName: "兒童中階美語", 
-        time: "<div style='display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding: 4px 0;'><div style='font-weight:800; color:var(--uci-blue); font-size:12.5px; line-height:1.2;'><span class='no-orphan'>週一 4:30-6:30 PM</span></div><div style='font-weight:700; color:var(--uci-blue); font-size:11.5px; line-height:1.2; margin-top:3px;'><span class='no-orphan'>週三、五 1:30-3:30 PM</span></div></div>", 
-        lessons: 51, price: 620, materials: 1572, misc: 60 
+    "Let's Go 5": { 
+        id: "Let's Go 5",
+        zhName: "兒童高階美語", 
+        time: "<div style='display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding: 4px 0;'><div style='font-weight:800; color:var(--uci-blue); font-size:13px; line-height:1.2;'><span class='no-orphan'>每週一、三、五</span></div><div style='font-weight:700; color:var(--uci-blue); font-size:11.5px; line-height:1.2; margin-top:3px;'><span class='no-orphan'>4:30 PM - 6:30 PM</span></div></div>", 
+        lessons: 51, price: 620, materials: 1612, misc: 60 
     }
 };
 
-var TARGET_COURSE = "Let's Go 3"; 
+var TARGET_COURSE = "Let's Go 5"; 
 
 var parentCanvas, staffCanvas;
 var parentCtx, staffCtx;
@@ -468,14 +468,14 @@ function calculateTuition() {
             var course = courseDatabase[courseKey];
             
             labelDisplay.innerHTML = "<div class='course-id'>" + course.id + "</div><div class='course-zh'>" + course.zhName + "</div>";
-            document.getElementById('class_time').value = "週一 4:30-6:30 PM, 週三五 1:30-3:30 PM";
+            document.getElementById('class_time').value = "每週一三五 4:30-6:30 PM";
             
             var discountRate = 1.0;
             var activeRadio = document.querySelector('input[name="discount_plan"]:checked');
             if (activeRadio) discountRate = parseFloat(activeRadio.value);
 
             var tuitionTotal = course.price * course.lessons; // 620 * 51 = 31,620
-            var materialsTotal = course.materials;           // 1,572
+            var materialsTotal = course.materials;           // 1,612
             var miscTotal = course.misc * course.lessons;     // 60 * 51 = 3,060
             
             var subTotal = tuitionTotal + materialsTotal + miscTotal;
@@ -553,7 +553,7 @@ document.getElementById('enrollmentForm').addEventListener('submit', function(e)
         if (el.type === 'radio') {
             if (el.checked) params.append(el.name, el.value);
         } else {
-            if (el.value) params.append(el.name, el.value);
+            if (el.value) params.append(el.value);
         }
     }
     params.append('auto_print', 'true');
