@@ -14,6 +14,7 @@
             --uci-blue: #1b3d6d;
             --uci-gold: #fecc07;
             --soft-red: #e74c3c;
+            --lg5-orange: #f39c12;
             --card-bg: #f8fafc;
             --border-color: #1b3d6d;
             --text-main: #1e293b;
@@ -480,6 +481,91 @@
             transform: none !important;
         }
 
+        /* 🌟 核心新增：送出成功後的感謝與品牌文案卡片專屬樣式 */
+        #successScreen {
+            display: none;
+            padding: 60px 30px;
+            text-align: center;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .success-icon {
+            font-size: 60px;
+            color: #27ae60;
+            margin-bottom: 15px;
+        }
+
+        .success-title {
+            color: var(--uci-blue);
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .success-subtitle {
+            color: var(--text-sub);
+            font-size: 15px;
+            margin-bottom: 30px;
+        }
+
+        .brand-quote-box {
+            background: linear-gradient(135deg, #f8fafc 0%, #e6f0fa 100%);
+            border: 2px solid var(--uci-blue);
+            border-left: 6px solid var(--lg5-orange);
+            border-radius: 10px;
+            padding: 25px 20px;
+            margin: 0 auto 30px auto;
+            max-width: 650px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(27, 61, 109, 0.08);
+        }
+
+        .brand-quote-en {
+            color: var(--uci-blue);
+            font-size: 18px;
+            font-weight: 800;
+            line-height: 1.4;
+            margin-bottom: 12px;
+            letter-spacing: 0.3px;
+        }
+
+        .brand-quote-zh {
+            color: var(--text-main);
+            font-size: 15px;
+            font-weight: 700;
+            line-height: 1.6;
+        }
+
+        .brand-quote-sub {
+            color: var(--text-sub);
+            font-size: 12.5px;
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        .reload-btn {
+            background-color: var(--uci-blue);
+            color: #fff;
+            border: none;
+            padding: 12px 30px;
+            font-size: 14px;
+            font-weight: 700;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-block;
+        }
+
+        .reload-btn:hover {
+            background-color: #002244;
+            transform: scale(1.03);
+        }
+
         @media print {
             @page { size: A4 portrait; margin: 10mm 15mm; }
             body { background-color: transparent; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
@@ -504,6 +590,7 @@
 <body>
 
 <div class="page-container">
+    <!-- 📋 報名主表單 -->
     <form id="enrollmentForm">
         <input type="hidden" name="series" value="LetsGo">
         <input type="hidden" name="formType" value="registration">
@@ -517,6 +604,7 @@
         <input type="hidden" id="parent_signature_base64" name="parent_signature_base64" value="">
         <input type="hidden" id="staff_signature_base64" name="staff_signature_base64" value="">
 
+        <!-- ================= PAGE 1 ================= -->
         <div class="page page1">
             <div id="dynamicBannerDisplay" class="dynamic-top-banner">載入中...</div>
 
@@ -657,6 +745,7 @@
             </div>
         </div>
 
+        <!-- ================= PAGE 2 ================= -->
         <div class="page page2">
             <h2 class="terms-header">報名條款與家長同意書<br><span style="font-size: 13.5px; font-weight: 500; color: var(--text-sub); display: block; margin-top: 4px;">Terms & Conditions (Bobby English School Policies)</span></h2>
             
@@ -729,6 +818,21 @@
             </div>
         </div>
     </form>
+
+    <!-- 🌟 核心新增：送出成功後的感謝與品牌文案卡片 -->
+    <div id="successScreen">
+        <div class="success-icon">🎉</div>
+        <h2 class="success-title">報名資料已成功傳送！</h2>
+        <p class="success-subtitle">謝謝您完成 Let's Go 5 課程的線上報名，我們非常期待與孩子一同踏上卓越的學習之旅！</p>
+        
+        <div class="brand-quote-box">
+            <div class="brand-quote-en">"The Gateway to Excellence! Advanced Reading, Grammar Logic & Paragraph Writing."</div>
+            <div class="brand-quote-zh">✨ 邁向卓越！與巴比美語攜手啟動高級美語閱讀、文法邏輯與寫作超能力！ ✨</div>
+            <div class="brand-quote-sub">Bobby English School — Guiding Students Toward Academic Literacy & Confidence.</div>
+        </div>
+
+        <button type="button" class="reload-btn" onclick="window.location.reload()">重新填寫報名表 / Submit Another Form</button>
+    </div>
 </div>
 
 <script>
@@ -918,6 +1022,7 @@ function processImageUpload(input) {
     }
 }
 
+// 🚀 Pure GAS POST 串接與畫面切換邏輯
 document.getElementById('enrollmentForm').addEventListener('submit', function(e) {
     e.preventDefault(); 
     var submitBtn = document.getElementById('submitBtn');
@@ -952,13 +1057,17 @@ document.getElementById('enrollmentForm').addEventListener('submit', function(e)
         body: JSON.stringify(object)
     })
     .then(function() {
-        alert("🎉【巴比美語】" + TARGET_COURSE + " 報名資料與電子簽名已成功同步至雲端系統！");
-        window.location.reload();
+        // 🎯 核心切換：隱藏報名表單，展示金句卡片
+        document.getElementById('enrollmentForm').style.display = 'none';
+        document.getElementById('successScreen').style.display = 'block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     })
     .catch(function(error) {
         console.error("Submission error:", error);
-        alert("🎉 報名資料已成功發送備份！謝謝您！");
-        window.location.reload();
+        // 備援切換機制
+        document.getElementById('enrollmentForm').style.display = 'none';
+        document.getElementById('successScreen').style.display = 'block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 });
 </script>
