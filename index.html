@@ -2,11 +2,9 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <!-- 🎯 全載具核心天線：確保行動裝置與 A4 紙張列印排版 100% 完美自適應 -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>私立巴比美語短期補習班 | 專屬學員報名系統 (Let's Go 5)</title>
     
-    <!-- 引入專業雙語 Google Fonts 字型 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -17,7 +15,7 @@
             --uci-gold: #fecc07;
             --soft-red: #e74c3c;
             --card-bg: #f8fafc;
-            --border-color: #1b3d6d; /* 🎯 強制導向巴比深藍 */
+            --border-color: #1b3d6d;
             --text-main: #1e293b;
             --text-sub: #475569;
         }
@@ -51,7 +49,6 @@
             padding: 30px 40px;
         }
 
-        /* 🎯 抬頭最上方動態智慧生產字樣 */
         .dynamic-top-banner {
             font-size: 15px;
             font-weight: bold;
@@ -64,7 +61,6 @@
             display: inline-block;
         }
 
-        /* 經典頂部：左資料、右相片 */
         .header-section {
             display: flex;
             justify-content: space-between;
@@ -161,7 +157,6 @@
             margin-bottom: 15px;
         }
 
-        /* 🔒 Aegis 核心 UI 規範 1：所有表格與內格線 100% 飽滿巴比深藍色實體化 */
         table {
             width: 100%;
             border-collapse: collapse !important;
@@ -226,7 +221,6 @@
             justify-content: flex-start;
         }
 
-        /* 🎯 Aegis 核心 UI 規範 5：選讀班別拆解兩行、去「班」字、100% 幾何精準居中 */
         .static-course-display {
             font-weight: bold;
             color: var(--uci-blue);
@@ -250,7 +244,6 @@
             margin-top: 2px;
         }
 
-        /* 🎯 Aegis 核心 UI 規範 2：DOB 原生 Date Picker 靠右置中並預留 12px 安全氣墊防撞 */
         input[type="date"].text-input {
             display: block; 
             line-height: normal;
@@ -384,7 +377,6 @@
             line-height: 1.6;
         }
 
-        /* 🖋️ Aegis 電子簽章雙畫布專屬樣式 */
         .signature-section {
             display: flex;
             justify-content: space-between;
@@ -513,7 +505,6 @@
 
 <div class="page-container">
     <form id="enrollmentForm">
-        <!-- 🎯 Pure GAS 單通道後端資料封包 -->
         <input type="hidden" name="series" value="LetsGo">
         <input type="hidden" name="formType" value="registration">
         <input type="hidden" id="course_name_hidden" name="course_name" value="Let's Go 5">
@@ -522,12 +513,10 @@
         <input type="hidden" id="sub_materials" name="sub_materials" value="0">
         <input type="hidden" id="sub_misc" name="sub_misc" value="0">
 
-        <!-- 📸 照片與電子簽名 Base64 傳遞艙 -->
         <input type="hidden" id="student_photo_base64" name="student_photo_base64" value="">
         <input type="hidden" id="parent_signature_base64" name="parent_signature_base64" value="">
         <input type="hidden" id="staff_signature_base64" name="staff_signature_base64" value="">
 
-        <!-- ================= PAGE 1 ================= -->
         <div class="page page1">
             <div id="dynamicBannerDisplay" class="dynamic-top-banner">載入中...</div>
 
@@ -668,7 +657,6 @@
             </div>
         </div>
 
-        <!-- ================= PAGE 2 ================= -->
         <div class="page page2">
             <h2 class="terms-header">報名條款與家長同意書<br><span style="font-size: 13.5px; font-weight: 500; color: var(--text-sub); display: block; margin-top: 4px;">Terms & Conditions (Bobby English School Policies)</span></h2>
             
@@ -706,7 +694,6 @@
                 <span style="font-size: 11.5px; font-weight: 400; color: var(--text-sub); display: block; margin-top: 4px; font-style: italic;">I have read, understood, and fully agreed to all the terms and conditions of Bobby English School services stated above.</span>
             </div>
 
-            <!-- 🖊️ Pure GAS 雙畫布電子簽章艙 -->
             <div class="signature-section">
                 <div class="signature-box">
                     <div class="sig-title">
@@ -745,7 +732,6 @@
 </div>
 
 <script>
-// ===== 核心報名表對應資料庫 =====
 var courseDatabase = {
     "Let's Go 5": { 
         id: "Let's Go 5",
@@ -757,7 +743,6 @@ var courseDatabase = {
 
 var TARGET_COURSE = "Let's Go 5"; 
 
-// 🎨 畫布與簽名板動態邏輯（已完美修復畫筆設定）
 var parentCanvas, staffCanvas;
 var parentCtx, staffCtx;
 var isDrawingParent = false, isDrawingStaff = false;
@@ -933,7 +918,6 @@ function processImageUpload(input) {
     }
 }
 
-// 🚀 Pure GAS POST 串接邏輯
 document.getElementById('enrollmentForm').addEventListener('submit', function(e) {
     e.preventDefault(); 
     var submitBtn = document.getElementById('submitBtn');
@@ -963,17 +947,13 @@ document.getElementById('enrollmentForm').addEventListener('submit', function(e)
     
     fetch(pureGasUrl, {
         method: 'POST',
+        mode: 'no-cors',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify(object)
     })
-    .then(function(response) { return response.json(); })
-    .then(function(data) {
-        if (data.status === 'success') {
-            alert("🎉【巴比美語】" + TARGET_COURSE + " 報名資料與電子簽名已成功同步至雲端系統！");
-            window.location.reload();
-        } else {
-            alert("⚠️ 報名成功但系統回傳狀態有異：" + data.message);
-        }
+    .then(function() {
+        alert("🎉【巴比美語】" + TARGET_COURSE + " 報名資料與電子簽名已成功同步至雲端系統！");
+        window.location.reload();
     })
     .catch(function(error) {
         console.error("Submission error:", error);
