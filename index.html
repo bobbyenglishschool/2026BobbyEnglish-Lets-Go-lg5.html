@@ -671,10 +671,8 @@
                         <tr>
                             <th><span class="zh-title">出生日期</span><span class="en-title">Date of Birth</span></th>
                             <td><input type="date" id="dob" name="dob" class="text-input" required></td>
-                            <!-- 🎯 精準校正：school_name 對齊 21 欄位 -->
                             <th><span class="zh-title">就讀學校</span><span class="en-title">School</span></th>
                             <td><input type="text" id="school_name" name="school_name" class="text-input"></td>
-                            <!-- 🎯 精準校正：grade_level 對齊 21 欄位 -->
                             <th><span class="zh-title">年級</span><span class="en-title">Grade</span></th>
                             <td>
                                 <div style="display: flex; align-items: center; justify-content: flex-start; padding: 0 8px; height: 100%;">
@@ -685,7 +683,6 @@
                         <tr>
                             <th><span class="zh-title">家長姓名</span><span class="en-title">Parent's Name</span></th>
                             <td><input type="text" id="parent_name" name="parent_name" class="text-input" required></td>
-                            <!-- 🎯 精準校正：relationship 對齊 21 欄位 -->
                             <th><span class="zh-title">與學生關係</span><span class="en-title">Relationship</span></th>
                             <td><input type="text" id="relationship" name="relationship" class="text-input" required></td>
                             <th><span class="zh-title">聯絡電話</span><span class="en-title">Phone Number</span></th>
@@ -746,10 +743,10 @@
                             <th><span class="zh-title">付款方式</span><span class="en-title">Payment Method</span></th>
                             <td colspan="3">
                                 <div class="payment-inline-row">
-                                    <label><input type="radio" name="payment_method" value="現金" checked> 現金 Cash</label>
+                                    <label><input type="radio" name="payment_method" value="現金" checked onclick="updatePaymentMethodValue()"> 現金 Cash</label>
                                     <label style="display: flex; align-items: center; gap: 2px;">
-                                        <input type="radio" name="payment_method" value="銀行轉帳"> 銀行轉帳(後五碼)：
-                                        <input type="text" id="transfer_code" name="transfer_code" style="border: none; border-bottom: 1.5px solid #333; width: 50px; background: transparent; outline: none; text-align: center; font-size: 13px; height: 22px; padding: 0; margin-right: 8px;">
+                                        <input type="radio" id="pay_transfer_radio" name="payment_method" value="銀行轉帳" onclick="updatePaymentMethodValue()"> 銀行轉帳(後五碼)：
+                                        <input type="text" id="transfer_code" name="transfer_code" style="border: none; border-bottom: 1.5px solid #333; width: 60px; background: transparent; outline: none; text-align: center; font-size: 13px; height: 22px; padding: 0; margin-right: 8px;" oninput="updatePaymentMethodValue()">
                                     </label>
                                 </div>
                             </td>
@@ -881,7 +878,22 @@ var isDrawingParent = false, isDrawingStaff = false;
 // 固定雙向 Pure GAS Web App API 節點
 var PURE_GAS_URL = "https://script.google.com/macros/s/AKfycbwr4AAm42X6bvPwEbp8tPhyc0N3js3zhicgkD5YGrnk5EnKmeGakB7FUIcCH98glKrwVA/exec";
 
-// 🚀 Row-ID 超短網址全自動數據與圖片還原機制 (線上預覽/列印專用)
+// 🎯 動態組合付款方式文字 (即時反映轉帳號碼)
+function updatePaymentMethodValue() {
+    var transferRadio = document.getElementById('pay_transfer_radio');
+    var codeInput = document.getElementById('transfer_code');
+    
+    if (transferRadio && codeInput) {
+        if (codeInput.value.trim() !== "") {
+            transferRadio.checked = true;
+            transferRadio.value = "銀行轉帳 (後五碼: " + codeInput.value.trim() + ")";
+        } else {
+            transferRadio.value = "銀行轉帳";
+        }
+    }
+}
+
+// 🚀 Row-ID 超短網址全自動數據與圖片還原機制 (預覽與列印專用)
 function loadRowDataIfPresent() {
     var urlParams = new URLSearchParams(window.location.search);
     var rowIndex = urlParams.get('row');
@@ -917,12 +929,32 @@ function loadRowDataIfPresent() {
                 if (row[12]) document.getElementById('line_id').value = row[12];
                 if (row[13]) document.getElementById('address').value = row[13];
 
+                // 🎯 付款方式 (row[16]) 強效解碼與還原
+                if (row[16]) {
+                    var payVal = row[16].toString();
+                    var pRadios = document.querySelectorAll('input[name="payment_method"]');
+                    
+                    if (payVal.indexOf('轉帳') !== -1) {
+                        var transferRadio = document.getElementById('pay_transfer_radio');
+                        if (transferRadio) {
+                            transferRadio.checked = true;
+                            transferRadio.value = payVal;
+                        }
+                        var match = payVal.match(/\d+/);
+                        if (match && document.getElementById('transfer_code')) {
+                            document.getElementById('transfer_code').value = match[0];
+                        }
+                    } else {
+                        pRadios.forEach(function(r){ if(r.value === payVal) r.checked = true; });
+                    }
+                }
+
                 // 還原大頭照
                 if (row[17] && row[17].indexOf('http') === 0) {
                     var pBox = document.getElementById('photoContainer');
                     pBox.innerHTML = '<img src="' + row[17] + '" class="preview-img" alt="學員大頭照">';
                 }
-                // 還原家長簽名檔 (置換為 <img> 呈現)
+                // 還原家長簽名檔
                 if (row[18] && row[18].indexOf('http') === 0) {
                     var pSigBox = document.getElementById('parentSigContainer');
                     pSigBox.innerHTML = '<img src="' + row[18] + '" class="sig-preview-img" alt="家長電子簽名">';
@@ -1137,6 +1169,8 @@ document.getElementById('enrollmentForm').addEventListener('submit', function(e)
         alert("⚠️ 請家長於下方進行電子簽名後再送出報名表喔！");
         return;
     }
+
+    updatePaymentMethodValue(); // 確保送出前組合最完美的轉帳字串
 
     if (parentCanvas) document.getElementById('parent_signature_base64').value = parentCanvas.toDataURL("image/png");
     if (!isCanvasBlank(staffCanvas)) {
