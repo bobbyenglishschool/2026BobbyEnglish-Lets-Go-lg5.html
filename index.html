@@ -44,6 +44,7 @@
             border-radius: 12px;
             overflow: hidden;
             width: 100%;
+            position: relative;
         }
 
         .page {
@@ -414,6 +415,10 @@
             border: 1px dashed var(--uci-blue);
             border-radius: 6px;
             margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
         }
 
         canvas.sig-pad {
@@ -422,6 +427,12 @@
             cursor: crosshair;
             touch-action: none;
             display: block;
+        }
+
+        .sig-preview-img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
         }
 
         .btn-clear-sig {
@@ -479,6 +490,12 @@
             color: #666666 !important;
             cursor: not-allowed;
             transform: none !important;
+        }
+
+        #loadingOverlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.92);
+            display: none; flex-direction: column; justify-content: center; align-items: center; z-index: 9999;
+            color: var(--uci-blue); font-weight: 800; font-size: 18px;
         }
 
         #successScreen {
@@ -571,7 +588,7 @@
             .page-container { box-shadow: none; max-width: 100%; }
             .page1 { break-after: page; }
             .page { padding: 0; }
-            .submit-btn-container { display: none !important; }
+            .submit-btn-container, .btn-clear-sig, #loadingOverlay { display: none !important; }
             table, th, td { border: 1px solid #1b3d6d !important; }
         }
 
@@ -588,6 +605,11 @@
 </head>
 <body>
 
+<div id="loadingOverlay">
+    <div style="font-size: 40px; margin-bottom: 10px;">🛡️🛹</div>
+    <div>正在調閱雲端報名資料，請稍候...</div>
+</div>
+
 <div class="page-container">
     <!-- 📋 報名主表單 -->
     <form id="enrollmentForm">
@@ -599,8 +621,8 @@
         <input type="hidden" id="sub_materials" name="sub_materials" value="0">
         <input type="hidden" id="sub_misc" name="sub_misc" value="0">
 
-        <!-- 🚀 靜態基準網址隱藏欄位 (確保 Email 按鈕 100% 觸發) -->
-        <input type="hidden" id="printLinkBaseInput" name="print_link_base" value="">
+        <!-- 🚀 靜態隱藏欄位 (帶入完整方案名稱) -->
+        <input type="hidden" id="discount_plan_text" name="discount_plan_text" value="">
 
         <input type="hidden" id="student_photo_base64" name="student_photo_base64" value="">
         <input type="hidden" id="parent_signature_base64" name="parent_signature_base64" value="">
@@ -635,9 +657,9 @@
                     <tbody>
                         <tr>
                             <th><span class="zh-title">中文姓名</span><span class="en-title">Chinese Name</span></th>
-                            <td><input type="text" name="student_name_zh" class="text-input" required></td>
+                            <td><input type="text" id="student_name_zh" name="student_name_zh" class="text-input" required></td>
                             <th><span class="zh-title">英文姓名</span><span class="en-title">English Name</span></th>
-                            <td><input type="text" name="student_name_en" class="text-input" required></td>
+                            <td><input type="text" id="student_name_en" name="student_name_en" class="text-input" required></td>
                             <th><span class="zh-title">性別</span><span class="en-title">Gender</span></th>
                             <td>
                                 <div class="radio-group">
@@ -648,33 +670,36 @@
                         </tr>
                         <tr>
                             <th><span class="zh-title">出生日期</span><span class="en-title">Date of Birth</span></th>
-                            <td><input type="date" name="dob" class="text-input" required></td>
+                            <td><input type="date" id="dob" name="dob" class="text-input" required></td>
+                            <!-- 🎯 精準校正：使用 school_name 屬性以相容 Code.gs 後端 -->
                             <th><span class="zh-title">就讀學校</span><span class="en-title">School</span></th>
-                            <td><input type="text" name="school" class="text-input"></td>
+                            <td><input type="text" id="school_name" name="school_name" class="text-input"></td>
+                            <!-- 🎯 精準校正：使用 grade_level 屬性以相容 Code.gs 後端 -->
                             <th><span class="zh-title">年級</span><span class="en-title">Grade</span></th>
                             <td>
                                 <div style="display: flex; align-items: center; justify-content: flex-start; padding: 0 8px; height: 100%;">
-                                    第 <input type="text" name="grade" style="border: none; border-bottom: 1px solid #333; width: 50px; text-align: center; margin: 0 5px; background: transparent; outline: none;"> 年級
+                                    第 <input type="text" id="grade_level" name="grade_level" style="border: none; border-bottom: 1px solid #333; width: 50px; text-align: center; margin: 0 5px; background: transparent; outline: none;"> 年級
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <th><span class="zh-title">家長姓名</span><span class="en-title">Parent's Name</span></th>
-                            <td><input type="text" name="parent_name" class="text-input" required></td>
+                            <td><input type="text" id="parent_name" name="parent_name" class="text-input" required></td>
+                            <!-- 🎯 精準校正：使用 relationship 屬性以相容 Code.gs 後端 -->
                             <th><span class="zh-title">與學生關係</span><span class="en-title">Relationship</span></th>
-                            <td><input type="text" name="relation" class="text-input" required></td>
+                            <td><input type="text" id="relationship" name="relationship" class="text-input" required></td>
                             <th><span class="zh-title">聯絡電話</span><span class="en-title">Phone Number</span></th>
-                            <td><input type="tel" name="phone" class="text-input" required></td>
+                            <td><input type="tel" id="phone" name="phone" class="text-input" required></td>
                         </tr>
                         <tr>
                             <th><span class="zh-title">電子信箱</span><span class="en-title">E-mail</span></th>
-                            <td colspan="3"><input type="email" name="email" class="text-input"></td>
+                            <td colspan="3"><input type="email" id="email" name="email" class="text-input"></td>
                             <th><span class="zh-title">LINE ID</span><span class="en-title">LINE ID</span></th>
-                            <td><input type="text" name="line_id" class="text-input"></td>
+                            <td><input type="text" id="line_id" name="line_id" class="text-input"></td>
                         </tr>
                         <tr>
                             <th><span class="zh-title">通訊地址</span><span class="en-title">Mailing Address</span></th>
-                            <td colspan="5"><input type="text" name="address" class="text-input" required></td>
+                            <td colspan="5"><input type="text" id="address" name="address" class="text-input" required></td>
                         </tr>
                     </tbody>
                 </table>
@@ -724,16 +749,16 @@
                                     <label><input type="radio" name="payment_method" value="現金" checked> 現金 Cash</label>
                                     <label style="display: flex; align-items: center; gap: 2px;">
                                         <input type="radio" name="payment_method" value="銀行轉帳"> 銀行轉帳(後五碼)：
-                                        <input type="text" name="transfer_code" style="border: none; border-bottom: 1.5px solid #333; width: 50px; background: transparent; outline: none; text-align: center; font-size: 13px; height: 22px; padding: 0; margin-right: 8px;">
+                                        <input type="text" id="transfer_code" name="transfer_code" style="border: none; border-bottom: 1.5px solid #333; width: 50px; background: transparent; outline: none; text-align: center; font-size: 13px; height: 22px; padding: 0; margin-right: 8px;">
                                     </label>
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <th><span class="zh-title">經辦人員</span><span class="en-title">Staff Name</span></th>
-                            <td><input type="text" name="staff_name" class="text-input" value="Joy"></td>
+                            <td><input type="text" id="staff_name" name="staff_name" class="text-input" value="Joy"></td>
                             <th><span class="zh-title">收據編號</span><span class="en-title">Receipt No.</span></th>
-                            <td><input type="text" name="receipt_no" class="text-input" placeholder="R-2026-XXXX"></td>
+                            <td><input type="text" id="receipt_no" name="receipt_no" class="text-input" placeholder="R-2026-XXXX"></td>
                             <th><span class="zh-title">教材發放狀況</span><span class="en-title">Material Status</span></th>
                             <td>
                                 <div class="radio-group">
@@ -791,7 +816,7 @@
                         <span>家長/監護人電子簽名 (Parent Signature)</span>
                         <button type="button" class="btn-clear-sig" onclick="clearCanvas('parentSigPad')">清除 / Clear</button>
                     </div>
-                    <div class="canvas-container">
+                    <div class="canvas-container" id="parentSigContainer">
                         <canvas id="parentSigPad" class="sig-pad"></canvas>
                     </div>
                     <div class="sig-date-row">
@@ -805,7 +830,7 @@
                         <span>承辦老師簽章 (Staff Signature)</span>
                         <button type="button" class="btn-clear-sig" onclick="clearCanvas('staffSigPad')">清除 / Clear</button>
                     </div>
-                    <div class="canvas-container">
+                    <div class="canvas-container" id="staffSigContainer">
                         <canvas id="staffSigPad" class="sig-pad"></canvas>
                     </div>
                     <div class="sig-date-row">
@@ -815,7 +840,7 @@
                 </div>
             </div>
 
-            <div class="submit-btn-container">
+            <div class="submit-btn-container" id="submitBtnContainer">
                 <button type="submit" id="submitBtn" class="submit-btn">確認並送出報名表 / Submit Form</button>
             </div>
         </div>
@@ -852,18 +877,79 @@ var TARGET_COURSE = "Let's Go 5";
 var parentCanvas, staffCanvas;
 var parentCtx, staffCtx;
 var isDrawingParent = false, isDrawingStaff = false;
+var PURE_GAS_URL = "https://script.google.com/macros/s/AKfycbwr4AAm42X6bvPwEbp8tPhyc0N3js3zhicgkD5YGrnk5EnKmeGakB7FUIcCH98glKrwVA/exec";
 
-// 🚀 防彈級全欄位與圖檔還原解析器 (線上預覽/列印專用)
+// 🚀 Row-ID 超短網址全自動數據與圖片還原機制 (預覽與列印專用)
+function loadRowDataIfPresent() {
+    var urlParams = new URLSearchParams(window.location.search);
+    var rowIndex = urlParams.get('row');
+    var series = urlParams.get('series') || 'LetsGo';
+    var formType = urlParams.get('formType') || 'registration';
+    var autoPrint = urlParams.get('auto_print');
+
+    if (rowIndex) {
+        document.getElementById('loadingOverlay').style.display = 'flex';
+        var fetchUrl = PURE_GAS_URL + "?row=" + rowIndex + "&series=" + series + "&formType=" + formType;
+        
+        fetch(fetchUrl)
+        .then(function(res) { return res.json(); })
+        .then(function(data) {
+            document.getElementById('loadingOverlay').style.display = 'none';
+            if (data && data.status === "success" && data.rowData) {
+                var row = data.rowData;
+                // row 陣列精準對齊 LetsGo_Registration 21 欄位：
+                if (row[2]) document.getElementById('student_name_zh').value = row[2];
+                if (row[3]) document.getElementById('student_name_en').value = row[3];
+                if (row[4]) {
+                    var gRadios = document.querySelectorAll('input[name="gender"]');
+                    gRadios.forEach(function(r){ if(r.value === row[4]) r.checked = true; });
+                }
+                if (row[5]) document.getElementById('dob').value = row[5];
+                if (row[6]) document.getElementById('school_name').value = row[6];
+                if (row[7]) document.getElementById('grade_level').value = row[7];
+                if (row[8]) document.getElementById('parent_name').value = row[8];
+                if (row[9]) document.getElementById('relationship').value = row[9];
+                if (row[10]) document.getElementById('phone').value = row[10];
+                if (row[11]) document.getElementById('email').value = row[11];
+                if (row[12]) document.getElementById('line_id').value = row[12];
+                if (row[13]) document.getElementById('address').value = row[13];
+
+                // 還原大頭照 (Google Drive 連結)
+                if (row[17] && row[17].indexOf('http') === 0) {
+                    var pBox = document.getElementById('photoContainer');
+                    pBox.innerHTML = '<img src="' + row[17] + '" class="preview-img" alt="學員大頭照">';
+                }
+                // 還原家長簽名檔
+                if (row[18] && row[18].indexOf('http') === 0) {
+                    var pSigBox = document.getElementById('parentSigContainer');
+                    pSigBox.innerHTML = '<img src="' + row[18] + '" class="sig-preview-img" alt="家長簽名">';
+                }
+                // 還原經辦簽名檔
+                if (row[19] && row[19].indexOf('http') === 0) {
+                    var sSigBox = document.getElementById('staffSigContainer');
+                    sSigBox.innerHTML = '<img src="' + row[19] + '" class="sig-preview-img" alt="經辦簽名">';
+                }
+
+                // 隱藏提交按鈕
+                document.getElementById('submitBtnContainer').style.display = 'none';
+
+                if (autoPrint === 'true') {
+                    setTimeout(function() { window.print(); }, 800);
+                }
+            }
+        })
+        .catch(function(err) {
+            document.getElementById('loadingOverlay').style.display = 'none';
+            console.log("Row-ID Fetch Error:", err);
+        });
+    }
+}
+
 window.onload = function() {
     document.getElementById('course_name_hidden').value = TARGET_COURSE;
     document.getElementById('mainTitleDisplay').innerHTML = "私立巴比美語短期補習班 ｜ " + TARGET_COURSE + " 專屬智慧報名系統";
     document.getElementById('subTitleDisplay').innerHTML = "Bobby English School - " + TARGET_COURSE + " Enrollment Form";
     document.getElementById('dynamicBannerDisplay').innerHTML = TARGET_COURSE + " 專屬智慧報名系統";
-    
-    var baseInput = document.getElementById('printLinkBaseInput');
-    if (baseInput) {
-        baseInput.value = window.location.origin + window.location.pathname;
-    }
 
     var today = new Date().toISOString().split('T')[0];
     if (document.getElementById('parentSigDate')) document.getElementById('parentSigDate').value = today;
@@ -871,95 +957,21 @@ window.onload = function() {
 
     initSignaturePads();
     calculateTuition();
-
-    // 🎯 核心還原邏輯：當偵測到 auto_print 參數時啟動
-    var urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.has('auto_print')) {
-        // 1. 強效還原所有文字、日期、單選框欄位
-        urlParams.forEach(function(rawValue, key) {
-            var value = decodeURIComponent(rawValue);
-            var inputs = document.querySelectorAll('[name="' + key + '"]');
-            
-            if (inputs.length > 0) {
-                inputs.forEach(function(input) {
-                    if (input.type === 'radio') {
-                        if (input.value === value) {
-                            input.checked = true;
-                        }
-                    } else {
-                        input.value = value;
-                    }
-                });
-            }
-        });
-
-        // 重新觸發金額計算，讓計費預覽區塊還原
-        calculateTuition();
-
-        // 🛠️ 轉檔工具：將 Google Drive 連結轉為直連渲染格式 (Direct Image URL)
-        function getDirectDriveUrl(url) {
-            if (!url) return "";
-            var decodedUrl = decodeURIComponent(url);
-            var match = decodedUrl.match(/\/d\/([a-zA-Z0-9_-]+)/) || decodedUrl.match(/id=([a-zA-Z0-9_-]+)/);
-            if (match && match[1]) {
-                return "https://lh3.googleusercontent.com/d/" + match[1];
-            }
-            return decodedUrl;
-        }
-
-        // 2. 還原大頭照
-        var photoUrl = getDirectDriveUrl(urlParams.get('photo_url'));
-        if (photoUrl) {
-            var container = document.getElementById('photoContainer');
-            var uploadText = document.getElementById('uploadText');
-            if (uploadText) uploadText.style.display = 'none';
-            var oldImg = container.querySelector('.preview-img');
-            if (oldImg) oldImg.remove();
-
-            var img = document.createElement('img');
-            img.src = photoUrl;
-            img.className = 'preview-img';
-            img.crossOrigin = "anonymous";
-            container.appendChild(img);
-        }
-
-        // 3. 還原家長親筆簽名檔 (渲染至 Canvas)
-        var parentSigUrl = getDirectDriveUrl(urlParams.get('parent_sig_url'));
-        if (parentSigUrl) {
-            var pImg = new Image();
-            pImg.crossOrigin = "anonymous";
-            pImg.onload = function() {
-                parentCtx.clearRect(0, 0, parentCanvas.width, parentCanvas.height);
-                parentCtx.drawImage(pImg, 0, 0, parentCanvas.width, parentCanvas.height);
-            };
-            pImg.src = parentSigUrl;
-        }
-
-        // 4. 還原經辦人員簽名檔 (渲染至 Canvas)
-        var staffSigUrl = getDirectDriveUrl(urlParams.get('staff_sig_url'));
-        if (staffSigUrl) {
-            var sImg = new Image();
-            sImg.crossOrigin = "anonymous";
-            sImg.onload = function() {
-                staffCtx.clearRect(0, 0, staffCanvas.width, staffCanvas.height);
-                staffCtx.drawImage(sImg, 0, 0, staffCanvas.width, staffCanvas.height);
-            };
-            sImg.src = staffSigUrl;
-        }
-    }
+    loadRowDataIfPresent(); // 啟動 Row-ID 自動解碼還原
 };
+
 function initSignaturePads() {
     parentCanvas = document.getElementById('parentSigPad');
     staffCanvas = document.getElementById('staffSigPad');
     
-    setupCanvas(parentCanvas);
-    setupCanvas(staffCanvas);
+    if (parentCanvas) setupCanvas(parentCanvas);
+    if (staffCanvas) setupCanvas(staffCanvas);
 
-    parentCtx = parentCanvas.getContext('2d');
-    staffCtx = staffCanvas.getContext('2d');
+    if (parentCanvas) parentCtx = parentCanvas.getContext('2d');
+    if (staffCanvas) staffCtx = staffCanvas.getContext('2d');
 
-    setupPadEvents(parentCanvas, parentCtx, function(drawing) { isDrawingParent = drawing; });
-    setupPadEvents(staffCanvas, staffCtx, function(drawing) { isDrawingStaff = drawing; });
+    if (parentCanvas) setupPadEvents(parentCanvas, parentCtx, function(drawing) { isDrawingParent = drawing; });
+    if (staffCanvas) setupPadEvents(staffCanvas, staffCtx, function(drawing) { isDrawingStaff = drawing; });
 }
 
 function setupCanvas(canvas) {
@@ -1022,11 +1034,14 @@ function setupPadEvents(canvas, ctx, setDrawingState) {
 
 function clearCanvas(canvasId) {
     var canvas = document.getElementById(canvasId);
-    var ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    if (canvas) {
+        var ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
 }
 
 function isCanvasBlank(canvas) {
+    if (!canvas) return true;
     var context = canvas.getContext('2d');
     var pixelBuffer = new Uint32Array(
         context.getImageData(0, 0, canvas.width, canvas.height).data.buffer
@@ -1050,7 +1065,10 @@ function calculateTuition() {
             
             var discountRate = 1.0;
             var activeRadio = document.querySelector('input[name="discount_plan"]:checked');
-            if (activeRadio) discountRate = parseFloat(activeRadio.value);
+            if (activeRadio) {
+                discountRate = parseFloat(activeRadio.value);
+                document.getElementById('discount_plan_text').value = activeRadio.parentElement.innerText.trim();
+            }
 
             var tuitionTotal = course.price * course.lessons; // 620 * 51 = 31,620
             var materialsTotal = course.materials;           // 1,612
@@ -1063,7 +1081,7 @@ function calculateTuition() {
             document.getElementById('sub_materials').value = Math.round(materialsTotal * discountRate);
             document.getElementById('sub_misc').value = Math.round(miscTotal * discountRate);
             
-            totalInput.value = "$" + finalTotal;
+            totalInput.value = "$" + finalTotal.toLocaleString();
             timeDisplay.innerHTML = course.time;
             
             var discountStr = (discountRate * 10).toString();
@@ -1089,7 +1107,7 @@ function processImageUpload(input) {
     if (input.files && input.files[0]) {
         var reader = new FileReader();
         reader.onload = function(e) {
-            uploadText.style.display = 'none';
+            if (uploadText) uploadText.style.display = 'none';
             var oldImg = container.querySelector('.preview-img');
             if (oldImg) oldImg.remove();
             
@@ -1115,21 +1133,10 @@ document.getElementById('enrollmentForm').addEventListener('submit', function(e)
         return;
     }
 
-    document.getElementById('parent_signature_base64').value = parentCanvas.toDataURL("image/png");
+    if (parentCanvas) document.getElementById('parent_signature_base64').value = parentCanvas.toDataURL("image/png");
     if (!isCanvasBlank(staffCanvas)) {
         document.getElementById('staff_signature_base64').value = staffCanvas.toDataURL("image/png");
     }
-
-    // 🎯 雙重保險：確保送出前 printLinkBaseInput 100% 存在且有值
-    var baseInput = document.getElementById('printLinkBaseInput');
-    if (!baseInput) {
-        baseInput = document.createElement('input');
-        baseInput.type = 'hidden';
-        baseInput.id = 'printLinkBaseInput';
-        baseInput.name = 'print_link_base';
-        form.appendChild(baseInput);
-    }
-    baseInput.value = window.location.origin + window.location.pathname;
 
     if (submitBtn) {
         submitBtn.disabled = true;
@@ -1140,9 +1147,7 @@ document.getElementById('enrollmentForm').addEventListener('submit', function(e)
     var object = {};
     formData.forEach(function(value, key){ object[key] = value; });
 
-    var pureGasUrl = "https://script.google.com/macros/s/AKfycbwr4AAm42X6bvPwEbp8tPhyc0N3js3zhicgkD5YGrnk5EnKmeGakB7FUIcCH98glKrwVA/exec";
-    
-    fetch(pureGasUrl, {
+    fetch(PURE_GAS_URL, {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
