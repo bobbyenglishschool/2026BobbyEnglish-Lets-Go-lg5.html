@@ -599,8 +599,9 @@
         <input type="hidden" id="sub_materials" name="sub_materials" value="0">
         <input type="hidden" id="sub_misc" name="sub_misc" value="0">
 
-      <!-- 🚀 靜態基準網址隱藏欄位 -->
-<input type="hidden" id="printLinkBaseInput" name="print_link_base" value="">
+        <!-- 🚀 靜態基準網址隱藏欄位 (確保 Email 按鈕 100% 觸發) -->
+        <input type="hidden" id="printLinkBaseInput" name="print_link_base" value="">
+
         <input type="hidden" id="student_photo_base64" name="student_photo_base64" value="">
         <input type="hidden" id="parent_signature_base64" name="parent_signature_base64" value="">
         <input type="hidden" id="staff_signature_base64" name="staff_signature_base64" value="">
@@ -820,7 +821,7 @@
         </div>
     </form>
 
-    <!-- 🌟 核心新增：送出成功後的感謝與品牌文案卡片 -->
+    <!-- 🌟 送出成功後的感謝與品牌文案卡片 -->
     <div id="successScreen">
         <div class="success-icon">🎉</div>
         <h2 class="success-title">報名資料已成功傳送！</h2>
@@ -854,17 +855,69 @@ var isDrawingParent = false, isDrawingStaff = false;
 
 window.onload = function() {
     document.getElementById('course_name_hidden').value = TARGET_COURSE;
-    
     document.getElementById('mainTitleDisplay').innerHTML = "私立巴比美語短期補習班 ｜ " + TARGET_COURSE + " 專屬智慧報名系統";
     document.getElementById('subTitleDisplay').innerHTML = "Bobby English School - " + TARGET_COURSE + " Enrollment Form";
     document.getElementById('dynamicBannerDisplay').innerHTML = TARGET_COURSE + " 專屬智慧報名系統";
     
+    // 🎯 核心補強：自動寫入當前網頁基準 URL，確保 Email 動態按鈕生成
+    var baseInput = document.getElementById('printLinkBaseInput');
+    if (baseInput) {
+        baseInput.value = window.location.origin + window.location.pathname;
+    }
+
     var today = new Date().toISOString().split('T')[0];
     if (document.getElementById('parentSigDate')) document.getElementById('parentSigDate').value = today;
     if (document.getElementById('staffSigDate')) document.getElementById('staffSigDate').value = today;
 
     initSignaturePads();
     calculateTuition();
+
+    // 🚀 URL 參數還原解析器 (線上預覽與列印專用)
+    var urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('auto_print')) {
+        // 1. 自動還原所有文字欄位
+        urlParams.forEach(function(value, key) {
+            var input = document.querySelector('[name="' + key + '"]');
+            if (input) {
+                if (input.type === 'radio') {
+                    var radio = document.querySelector('[name="' + key + '"][value="' + value + '"]');
+                    if (radio) radio.checked = true;
+                } else {
+                    input.value = value;
+                }
+            }
+        });
+        calculateTuition();
+
+        // 2. 還原大頭照 (從 Google Drive 渲染)
+        var photoUrl = urlParams.get('photo_url');
+        if (photoUrl) {
+            var container = document.getElementById('photoContainer');
+            var uploadText = document.getElementById('uploadText');
+            if (uploadText) uploadText.style.display = 'none';
+            var img = document.createElement('img');
+            img.src = photoUrl;
+            img.className = 'preview-img';
+            container.appendChild(img);
+        }
+
+        // 3. 還原家長與經辦簽名檔 (從 Google Drive 渲染至 Canvas)
+        var parentSigUrl = urlParams.get('parent_sig_url');
+        if (parentSigUrl) {
+            var pImg = new Image();
+            pImg.crossOrigin = "Anonymous";
+            pImg.onload = function() { parentCtx.drawImage(pImg, 0, 0, parentCanvas.width, parentCanvas.height); };
+            pImg.src = parentSigUrl;
+        }
+
+        var staffSigUrl = urlParams.get('staff_sig_url');
+        if (staffSigUrl) {
+            var sImg = new Image();
+            sImg.crossOrigin = "Anonymous";
+            sImg.onload = function() { staffCtx.drawImage(sImg, 0, 0, staffCanvas.width, staffCanvas.height); };
+            sImg.src = staffSigUrl;
+        }
+    }
 };
 
 function initSignaturePads() {
@@ -1023,7 +1076,7 @@ function processImageUpload(input) {
     }
 }
 
-// 🚀 Pure GAS POST 串接、動態列印網址生成與畫面切換邏輯
+// 🚀 Pure GAS POST 串接腳本
 document.getElementById('enrollmentForm').addEventListener('submit', function(e) {
     e.preventDefault(); 
     var form = this;
@@ -1039,33 +1092,25 @@ document.getElementById('enrollmentForm').addEventListener('submit', function(e)
         document.getElementById('staff_signature_base64').value = staffCanvas.toDataURL("image/png");
     }
 
-    // 🎯 核心補強 2：動態生成線上預覽/列印連結並打包賦值
-    var params = new URLSearchParams();
-    var baseUrl = window.location.origin + window.location.pathname;
-    var formElements = form.elements;
-
-    for (var i = 0; i < formElements.length; i++) {
-        var el = formElements[i];
-        if (!el.name || el.type === 'file' || el.type === 'submit' || el.name.startsWith('_') || el.name.endsWith('_base64')) continue;
-        if (el.type === 'radio') {
-            if (el.checked) params.append(el.name, el.value);
-        } else {
-            if (el.value) params.append(el.name, el.value);
-        }
+    // 🎯 雙重保險：確保送出前 printLinkBaseInput 100% 存在且有值
+    var baseInput = document.getElementById('printLinkBaseInput');
+    if (!baseInput) {
+        baseInput = document.createElement('input');
+        baseInput.type = 'hidden';
+        baseInput.id = 'printLinkBaseInput';
+        baseInput.name = 'print_link_base';
+        form.appendChild(baseInput);
     }
-    params.append('auto_print', 'true');
-    document.getElementById('printLinkInput').value = baseUrl + '?' + params.toString();
+    baseInput.value = window.location.origin + window.location.pathname;
 
     if (submitBtn) {
         submitBtn.disabled = true;
         submitBtn.innerText = "正在傳送資料至巴比核心雲端資料庫...";
     }
     
-    var formData = new FormData(this);
+    var formData = new FormData(form);
     var object = {};
-    formData.forEach(function(value, key){
-        object[key] = value;
-    });
+    formData.forEach(function(value, key){ object[key] = value; });
 
     var pureGasUrl = "https://script.google.com/macros/s/AKfycbwr4AAm42X6bvPwEbp8tPhyc0N3js3zhicgkD5YGrnk5EnKmeGakB7FUIcCH98glKrwVA/exec";
     
@@ -1081,7 +1126,6 @@ document.getElementById('enrollmentForm').addEventListener('submit', function(e)
         window.scrollTo({ top: 0, behavior: 'smooth' });
     })
     .catch(function(error) {
-        console.error("Submission error:", error);
         document.getElementById('enrollmentForm').style.display = 'none';
         document.getElementById('successScreen').style.display = 'block';
         window.scrollTo({ top: 0, behavior: 'smooth' });
