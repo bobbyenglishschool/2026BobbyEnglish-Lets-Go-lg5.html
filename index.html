@@ -853,7 +853,7 @@ var parentCanvas, staffCanvas;
 var parentCtx, staffCtx;
 var isDrawingParent = false, isDrawingStaff = false;
 
-// 🚀 URL 參數與高相容圖檔還原解析器 (線上預覽與列印專用)
+// 🚀 防彈級全欄位與圖檔還原解析器 (線上預覽/列印專用)
 window.onload = function() {
     document.getElementById('course_name_hidden').value = TARGET_COURSE;
     document.getElementById('mainTitleDisplay').innerHTML = "私立巴比美語短期補習班 ｜ " + TARGET_COURSE + " 專屬智慧報名系統";
@@ -872,21 +872,28 @@ window.onload = function() {
     initSignaturePads();
     calculateTuition();
 
-    // 🎯 核心還原邏輯：解析 URL 帶入之全欄位、大頭照與雙簽名檔
+    // 🎯 核心還原邏輯：當偵測到 auto_print 參數時啟動
     var urlParams = new URLSearchParams(window.location.search);
     if (urlParams.has('auto_print')) {
-        // 1. 還原所有文字與選單欄位
-        urlParams.forEach(function(value, key) {
-            var input = document.querySelector('[name="' + key + '"]');
-            if (input) {
-                if (input.type === 'radio') {
-                    var radio = document.querySelector('[name="' + key + '"][value="' + value + '"]');
-                    if (radio) radio.checked = true;
-                } else {
-                    input.value = value;
-                }
+        // 1. 強效還原所有文字、日期、單選框欄位
+        urlParams.forEach(function(rawValue, key) {
+            var value = decodeURIComponent(rawValue);
+            var inputs = document.querySelectorAll('[name="' + key + '"]');
+            
+            if (inputs.length > 0) {
+                inputs.forEach(function(input) {
+                    if (input.type === 'radio') {
+                        if (input.value === value) {
+                            input.checked = true;
+                        }
+                    } else {
+                        input.value = value;
+                    }
+                });
             }
         });
+
+        // 重新觸發金額計算，讓計費預覽區塊還原
         calculateTuition();
 
         // 🛠️ 轉檔工具：將 Google Drive 連結轉為直連渲染格式 (Direct Image URL)
