@@ -853,13 +853,13 @@ var parentCanvas, staffCanvas;
 var parentCtx, staffCtx;
 var isDrawingParent = false, isDrawingStaff = false;
 
+// 🚀 URL 參數與高相容圖檔還原解析器 (線上預覽與列印專用)
 window.onload = function() {
     document.getElementById('course_name_hidden').value = TARGET_COURSE;
     document.getElementById('mainTitleDisplay').innerHTML = "私立巴比美語短期補習班 ｜ " + TARGET_COURSE + " 專屬智慧報名系統";
     document.getElementById('subTitleDisplay').innerHTML = "Bobby English School - " + TARGET_COURSE + " Enrollment Form";
     document.getElementById('dynamicBannerDisplay').innerHTML = TARGET_COURSE + " 專屬智慧報名系統";
     
-    // 🎯 核心補強：自動寫入當前網頁基準 URL，確保 Email 動態按鈕生成
     var baseInput = document.getElementById('printLinkBaseInput');
     if (baseInput) {
         baseInput.value = window.location.origin + window.location.pathname;
@@ -872,10 +872,10 @@ window.onload = function() {
     initSignaturePads();
     calculateTuition();
 
-    // 🚀 URL 參數還原解析器 (線上預覽與列印專用)
+    // 🎯 核心還原邏輯：解析 URL 帶入之全欄位、大頭照與雙簽名檔
     var urlParams = new URLSearchParams(window.location.search);
     if (urlParams.has('auto_print')) {
-        // 1. 自動還原所有文字欄位
+        // 1. 還原所有文字與選單欄位
         urlParams.forEach(function(value, key) {
             var input = document.querySelector('[name="' + key + '"]');
             if (input) {
@@ -889,37 +889,58 @@ window.onload = function() {
         });
         calculateTuition();
 
-        // 2. 還原大頭照 (從 Google Drive 渲染)
-        var photoUrl = urlParams.get('photo_url');
+        // 🛠️ 轉檔工具：將 Google Drive 連結轉為直連渲染格式 (Direct Image URL)
+        function getDirectDriveUrl(url) {
+            if (!url) return "";
+            var decodedUrl = decodeURIComponent(url);
+            var match = decodedUrl.match(/\/d\/([a-zA-Z0-9_-]+)/) || decodedUrl.match(/id=([a-zA-Z0-9_-]+)/);
+            if (match && match[1]) {
+                return "https://lh3.googleusercontent.com/d/" + match[1];
+            }
+            return decodedUrl;
+        }
+
+        // 2. 還原大頭照
+        var photoUrl = getDirectDriveUrl(urlParams.get('photo_url'));
         if (photoUrl) {
             var container = document.getElementById('photoContainer');
             var uploadText = document.getElementById('uploadText');
             if (uploadText) uploadText.style.display = 'none';
+            var oldImg = container.querySelector('.preview-img');
+            if (oldImg) oldImg.remove();
+
             var img = document.createElement('img');
             img.src = photoUrl;
             img.className = 'preview-img';
+            img.crossOrigin = "anonymous";
             container.appendChild(img);
         }
 
-        // 3. 還原家長與經辦簽名檔 (從 Google Drive 渲染至 Canvas)
-        var parentSigUrl = urlParams.get('parent_sig_url');
+        // 3. 還原家長親筆簽名檔 (渲染至 Canvas)
+        var parentSigUrl = getDirectDriveUrl(urlParams.get('parent_sig_url'));
         if (parentSigUrl) {
             var pImg = new Image();
-            pImg.crossOrigin = "Anonymous";
-            pImg.onload = function() { parentCtx.drawImage(pImg, 0, 0, parentCanvas.width, parentCanvas.height); };
+            pImg.crossOrigin = "anonymous";
+            pImg.onload = function() {
+                parentCtx.clearRect(0, 0, parentCanvas.width, parentCanvas.height);
+                parentCtx.drawImage(pImg, 0, 0, parentCanvas.width, parentCanvas.height);
+            };
             pImg.src = parentSigUrl;
         }
 
-        var staffSigUrl = urlParams.get('staff_sig_url');
+        // 4. 還原經辦人員簽名檔 (渲染至 Canvas)
+        var staffSigUrl = getDirectDriveUrl(urlParams.get('staff_sig_url'));
         if (staffSigUrl) {
             var sImg = new Image();
-            sImg.crossOrigin = "Anonymous";
-            sImg.onload = function() { staffCtx.drawImage(sImg, 0, 0, staffCanvas.width, staffCanvas.height); };
+            sImg.crossOrigin = "anonymous";
+            sImg.onload = function() {
+                staffCtx.clearRect(0, 0, staffCanvas.width, staffCanvas.height);
+                staffCtx.drawImage(sImg, 0, 0, staffCanvas.width, staffCanvas.height);
+            };
             sImg.src = staffSigUrl;
         }
     }
 };
-
 function initSignaturePads() {
     parentCanvas = document.getElementById('parentSigPad');
     staffCanvas = document.getElementById('staffSigPad');
