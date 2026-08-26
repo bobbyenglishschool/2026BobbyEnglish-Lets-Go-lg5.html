@@ -760,7 +760,31 @@ function loadRowDataIfPresent() {
                     var gRadios = document.querySelectorAll('input[name="gender"]');
                     gRadios.forEach(function(r){ if(r.value === row[4]) r.checked = true; });
                 }
-                if (row[5]) document.getElementById('dob').value = row[5];
+                if (row[5]) // 🎯 終極防彈本地時區轉換器：只抓年月日，絕不被時區扣一天！
+if (row[5]) {
+    var rawDob = row[5].toString();
+    var formattedDob = "";
+    
+    // 如果帶有世界時間 T，先轉成台灣本地時間的 Date 物件
+    if (rawDob.indexOf('T') !== -1) {
+        var dObj = new Date(rawDob);
+        var y = dObj.getFullYear();
+        var m = String(dObj.getMonth() + 1).padStart(2, '0');
+        var d = String(dObj.getDate()).padStart(2, '0');
+        formattedDob = y + "-" + m + "-" + d;
+    } else if (rawDob.indexOf('/') !== -1) {
+        var parts = rawDob.split('/');
+        if (parts.length === 3) {
+            var y = parts[0];
+            var m = parts[1].padStart(2, '0');
+            var d = parts[2].padStart(2, '0');
+            formattedDob = y + "-" + m + "-" + d;
+        }
+    } else {
+        formattedDob = rawDob;
+    }
+    document.getElementById('dob').value = formattedDob;
+}
                 if (row[6]) document.getElementById('school_name').value = row[6];
                 if (row[7]) document.getElementById('grade_level').value = row[7];
                 if (row[8]) document.getElementById('parent_name').value = row[8];
