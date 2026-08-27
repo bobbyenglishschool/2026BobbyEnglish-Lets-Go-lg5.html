@@ -36,6 +36,16 @@
             -webkit-font-smoothing: antialiased;
         }
 
+        /* 🎨 提示文淡化屬性 (防範家長誤以為已填寫) */
+        ::placeholder {
+            color: #94a3b8 !important;
+            opacity: 0.75 !important;
+            font-style: italic !important;
+            font-weight: 400 !important;
+        }
+        ::-webkit-input-placeholder { color: #94a3b8 !important; opacity: 0.75 !important; font-style: italic !important; font-weight: 400 !important; }
+        :-ms-input-placeholder { color: #94a3b8 !important; opacity: 0.75 !important; font-style: italic !important; font-weight: 400 !important; }
+
         .page-container {
             max-width: 800px;
             margin: 0 auto;
@@ -155,8 +165,6 @@
             font-size: 13px;
             table-layout: fixed;
             border: 1px solid #1b3d6d !important;
-            border-radius: 0px;
-            overflow: hidden;
             background-color: #ffffff;
         }
 
@@ -189,7 +197,7 @@
             height: 100%;
             outline: none;
             font-family: inherit;
-            font-size: 13px;
+            font-size: 13.5px;
             color: inherit;
             padding: 4px 8px;
             text-align: left;
@@ -210,23 +218,6 @@
             line-height: 1.3;
             padding: 4px 0;
         }
-        
-        .static-course-display .course-id { font-size: 14px; font-weight: 800; }
-        .static-course-display .course-zh { font-size: 12px; font-weight: 600; margin-top: 2px; }
-
-        input[type="date"].text-input {
-            display: block; 
-            line-height: normal;
-            padding-right: 12px !important;
-            font-size: 11.5px !important;
-            letter-spacing: -0.2px;
-            text-align: right !important;
-            width: 100%;
-            height: 100%;
-            box-sizing: border-box;
-        }
-
-        input[name="receipt_no"].text-input { font-size: 11.5px !important; padding: 4px 6px; }
 
         .radio-group {
             display: flex;
@@ -249,12 +240,10 @@
             padding-right: 12px;
             height: 100%;
             width: 100%;
-            flex-wrap: nowrap;
+            flex-wrap: wrap;
         }
 
         .payment-inline-row label { display: flex; align-items: center; gap: 4px; cursor: pointer; white-space: nowrap; }
-
-        .no-orphan { display: inline-block; white-space: nowrap; }
 
         .offer-box {
             background-color: rgba(254, 204, 7, 0.15);
@@ -277,7 +266,6 @@
             margin-bottom: 22px;
             font-size: 19px;
             font-weight: 800;
-            letter-spacing: 0.5px;
         }
 
         .privacy-statement {
@@ -287,13 +275,11 @@
             font-size: 13.5px;
             margin-bottom: 22px;
             border-radius: 6px;
-            text-align: justify;
             line-height: 1.65;
             border: 1px solid #1b3d6d !important;
         }
 
-        .terms-list { font-size: 13.5px; color: var(--text-main); text-align: justify; }
-
+        .terms-list { font-size: 13.5px; color: var(--text-main); }
         .terms-list .term-item {
             margin-bottom: 18px;
             line-height: 1.65;
@@ -303,24 +289,7 @@
             border: 1px solid #1b3d6d !important;
         }
 
-        .terms-list strong { color: var(--uci-blue); font-size: 14px; font-weight: 800; }
-
-        .agreement-text {
-            text-align: center;
-            font-size: 14.5px;
-            font-weight: 800;
-            color: var(--soft-red);
-            margin: 25px 0 20px 0;
-            line-height: 1.6;
-        }
-
-        .signature-section {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 25px;
-            gap: 20px;
-        }
-
+        .signature-section { display: flex; justify-content: space-between; margin-top: 25px; gap: 20px; }
         .signature-box {
             flex: 1;
             width: 50%; 
@@ -328,43 +297,15 @@
             padding: 14px;
             border-radius: 8px;
             background-color: #fafbfc;
-            text-align: left;
         }
 
-        .sig-title { color: var(--uci-blue); font-weight: 700; font-size: 13px; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
-
-        .canvas-container {
-            position: relative;
-            width: 100%;
-            height: 120px;
-            background: #fff;
-            border: 1px dashed var(--uci-blue);
-            border-radius: 6px;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-
+        .sig-title { color: var(--uci-blue); font-weight: 700; font-size: 13px; margin-bottom: 6px; display: flex; justify-content: space-between; }
+        .canvas-container { position: relative; width: 100%; height: 120px; background: #fff; border: 1px dashed var(--uci-blue); border-radius: 6px; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
         canvas.sig-pad { width: 100%; height: 100%; cursor: crosshair; touch-action: none; display: block; }
         .sig-preview-img { max-width: 100%; max-height: 100%; object-fit: contain; }
-
-        .btn-clear-sig {
-            background: #f1f5f9;
-            border: 1px solid #cbd5e1;
-            color: var(--text-sub);
-            font-size: 11px;
-            padding: 2px 8px;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .btn-clear-sig:hover { background: #e2e8f0; color: var(--uci-blue); }
-        .sig-date-row { display: flex; align-items: center; gap: 8px; margin-top: 6px; font-size: 12.5px; color: var(--uci-blue); font-weight: 700; }
+        .btn-clear-sig { background: #f1f5f9; border: 1px solid #cbd5e1; color: var(--text-sub); font-size: 11px; padding: 2px 8px; border-radius: 4px; cursor: pointer; }
 
         .submit-btn-container { margin-top: 30px; text-align: center; }
-
         .submit-btn {
             background-color: var(--uci-gold);
             color: var(--uci-blue);
@@ -377,11 +318,7 @@
             width: 100%;
             max-width: 400px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            transition: transform 0.2s, box-shadow 0.2s;
         }
-
-        .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 12px rgba(0,0,0,0.15); }
-        .submit-btn:disabled { background-color: #cccccc !important; color: #666666 !important; cursor: not-allowed; transform: none !important; }
 
         #loadingOverlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.92);
@@ -389,18 +326,8 @@
             color: var(--uci-blue); font-weight: 800; font-size: 18px;
         }
 
-        #successScreen {
-            display: none;
-            padding: 60px 30px;
-            text-align: center;
-            animation: fadeIn 0.5s ease-in-out;
-        }
-
+        #successScreen { display: none; padding: 60px 30px; text-align: center; animation: fadeIn 0.5s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        .success-icon { font-size: 60px; color: #27ae60; margin-bottom: 15px; }
-        .success-title { color: var(--uci-blue); font-size: 24px; font-weight: 800; margin-bottom: 10px; }
-        .success-subtitle { color: var(--text-sub); font-size: 15px; margin-bottom: 30px; }
 
         .brand-quote-box {
             background: linear-gradient(135deg, #f8fafc 0%, #e6f0fa 100%);
@@ -432,22 +359,57 @@
 
         @media print {
             @page { size: A4 portrait; margin: 10mm 15mm; }
-            body { background-color: transparent; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            body { background-color: transparent; padding: 0; }
             .page-container { box-shadow: none; max-width: 100%; }
-            .page1 { break-after: page; }
-            .page { padding: 0; }
             .submit-btn-container, .btn-clear-sig, #loadingOverlay { display: none !important; }
-            table, th, td { border: 1px solid #1b3d6d !important; }
+            table, th, td { border: 1px solid #1b3d6d !important; display: table-cell !important; }
+            tr { display: table-row !important; }
         }
 
+        /* 📱 手機響應式排版 (解鎖高度與邊界防護) */
         @media (max-width: 768px) {
-            body { padding: 8px; }
-            .page { padding: 15px 12px; }
-            .page-container { width: 100%; overflow-x: visible; }
-            .header-section { flex-direction: row; gap: 10px; }
+            body { padding: 6px 0; }
+            .page { padding: 16px 12px; }
+            
+            .header-section { flex-direction: column; align-items: center; text-align: center; }
+            .title-area { padding-right: 0; margin-bottom: 14px; }
+            
+            .table-responsive-wrapper { overflow-x: visible !important; }
+            table { width: 100% !important; min-width: 0 !important; display: block !important; border: none !important; }
+            tbody { display: block !important; width: 100% !important; }
+            tr { display: flex !important; flex-wrap: wrap !important; width: 100% !important; margin-bottom: 12px; border: 1.5px solid var(--uci-blue) !important; border-radius: 8px; overflow: hidden; background: #fff; }
+            
+            th { display: block !important; width: 100% !important; background-color: #e6f0fa !important; text-align: left !important; padding: 6px 10px !important; border-bottom: 1px solid var(--uci-blue) !important; border-right: none !important; }
+            th span.zh-title { font-size: 13px !important; display: inline-block !important; margin-right: 6px; }
+            th span.en-title { font-size: 10.5px !important; display: inline-block !important; }
+
+            td { 
+                display: block !important; 
+                width: 100% !important; 
+                height: auto !important; 
+                min-height: 48px !important; 
+                padding: 8px 10px !important; 
+                border: none !important; 
+                border-bottom: 1px dashed #cbd5e1 !important; 
+                box-sizing: border-box !important;
+            }
+            td:last-child { border-bottom: none !important; }
+
+            .text-input { 
+                height: 42px !important; 
+                line-height: normal !important; 
+                font-size: 14px !important; 
+                padding: 6px 10px !important; 
+                background-color: #fafbfc; 
+                border-radius: 6px; 
+                border: 1px solid #cbd5e1 !important; 
+                text-align: left !important;
+                box-sizing: border-box !important;
+            }
+            .text-input:focus { background-color: #fff !important; border-color: var(--uci-blue) !important; }
+            
             .signature-section { flex-direction: column; gap: 15px; }
             .signature-box { width: 100%; }
-            table { min-width: 600px; }
         }
     </style>
 </head>
@@ -467,14 +429,13 @@
         <input type="hidden" id="sub_tuition" name="sub_tuition" value="0">
         <input type="hidden" id="sub_materials" name="sub_materials" value="0">
         <input type="hidden" id="sub_misc" name="sub_misc" value="0">
-
         <input type="hidden" id="discount_plan_text" name="discount_plan_text" value="">
 
         <input type="hidden" id="student_photo_base64" name="student_photo_base64" value="">
         <input type="hidden" id="parent_signature_base64" name="parent_signature_base64" value="">
         <input type="hidden" id="staff_signature_base64" name="staff_signature_base64" value="">
 
-        <!-- ================= PAGE 1 ================= -->
+        <!-- PAGE 1 -->
         <div class="page page1">
             <div id="dynamicBannerDisplay" class="dynamic-top-banner">載入中...</div>
 
@@ -503,9 +464,9 @@
                     <tbody>
                         <tr>
                             <th><span class="zh-title">中文姓名</span><span class="en-title">Chinese Name</span></th>
-                            <td><input type="text" id="student_name_zh" name="student_name_zh" class="text-input" required></td>
+                            <td><input type="text" id="student_name_zh" name="student_name_zh" class="text-input" placeholder="請輸入學員中文姓名" required></td>
                             <th><span class="zh-title">英文姓名</span><span class="en-title">English Name</span></th>
-                            <td><input type="text" id="student_name_en" name="student_name_en" class="text-input" required></td>
+                            <td><input type="text" id="student_name_en" name="student_name_en" class="text-input" placeholder="e.g. Joy Chen" required></td>
                             <th><span class="zh-title">性別</span><span class="en-title">Gender</span></th>
                             <td>
                                 <div class="radio-group">
@@ -516,33 +477,33 @@
                         </tr>
                         <tr>
                             <th><span class="zh-title">出生日期</span><span class="en-title">Date of Birth</span></th>
-                            <td><input type="date" id="dob" name="dob" class="text-input" required></td>
+                            <td><input type="text" id="dob" name="dob" class="text-input" placeholder="例：2018/05/20" required></td>
                             <th><span class="zh-title">就讀學校</span><span class="en-title">School</span></th>
-                            <td><input type="text" id="school_name" name="school_name" class="text-input"></td>
+                            <td><input type="text" id="school_name" name="school_name" class="text-input" placeholder="請填就讀國小/幼兒園"></td>
                             <th><span class="zh-title">年級</span><span class="en-title">Grade</span></th>
                             <td>
-                                <div style="display: flex; align-items: center; justify-content: flex-start; padding: 0 8px; height: 100%;">
-                                    第 <input type="text" id="grade_level" name="grade_level" style="border: none; border-bottom: 1px solid #333; width: 50px; text-align: center; margin: 0 5px; background: transparent; outline: none;"> 年級
+                                <div style="display: flex; align-items: center; justify-content: flex-start; padding: 0 4px; height: 100%; white-space: nowrap;">
+                                    <input type="text" id="grade_level" name="grade_level" style="border: none; border-bottom: 1.5px solid #1b3d6d; width: 45px; text-align: center; margin: 0 2px; background: transparent; outline: none; font-weight: bold;" placeholder="如：5"> 年級
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <th><span class="zh-title">家長姓名</span><span class="en-title">Parent's Name</span></th>
-                            <td><input type="text" id="parent_name" name="parent_name" class="text-input" required></td>
+                            <td><input type="text" id="parent_name" name="parent_name" class="text-input" placeholder="請填家長全名" required></td>
                             <th><span class="zh-title">與學生關係</span><span class="en-title">Relationship</span></th>
-                            <td><input type="text" id="relationship" name="relationship" class="text-input" required></td>
+                            <td><input type="text" id="relationship" name="relationship" class="text-input" placeholder="如：父、母" required></td>
                             <th><span class="zh-title">聯絡電話</span><span class="en-title">Phone Number</span></th>
-                            <td><input type="tel" id="phone" name="phone" class="text-input" required></td>
+                            <td><input type="tel" id="phone" name="phone" class="text-input" placeholder="如：0912345678" required></td>
                         </tr>
                         <tr>
                             <th><span class="zh-title">電子信箱</span><span class="en-title">E-mail</span></th>
-                            <td colspan="3"><input type="email" id="email" name="email" class="text-input"></td>
+                            <td colspan="3"><input type="email" id="email" name="email" class="text-input" placeholder="接收開課與重要校務通知"></td>
                             <th><span class="zh-title">LINE ID</span><span class="en-title">LINE ID</span></th>
-                            <td><input type="text" id="line_id" name="line_id" class="text-input"></td>
+                            <td><input type="text" id="line_id" name="line_id" class="text-input" placeholder="方便課務聯繫"></td>
                         </tr>
                         <tr>
                             <th><span class="zh-title">通訊地址</span><span class="en-title">Mailing Address</span></th>
-                            <td colspan="5"><input type="text" id="address" name="address" class="text-input" required></td>
+                            <td colspan="5"><input type="text" id="address" name="address" class="text-input" placeholder="請填完整通訊地址" required></td>
                         </tr>
                     </tbody>
                 </table>
@@ -575,9 +536,7 @@
                 </table>
             </div>
 
-            <div class="offer-box" id="calcPreview">
-                核心大腦即時計算中...
-            </div>
+            <div class="offer-box" id="calcPreview">核心大腦即時計算中...</div>
 
             <div class="section-title">補習班行政確認欄 Office Use Only</div>
             <div class="table-responsive-wrapper">
@@ -592,7 +551,7 @@
                                     <label><input type="radio" name="payment_method" value="現金" checked onclick="updatePaymentMethodValue()"> 現金 Cash</label>
                                     <label style="display: flex; align-items: center; gap: 2px;">
                                         <input type="radio" id="pay_transfer_radio" name="payment_method" value="銀行轉帳" onclick="updatePaymentMethodValue()"> 銀行轉帳(後五碼)：
-                                        <input type="text" id="transfer_code" name="transfer_code" style="border: none; border-bottom: 1.5px solid #333; width: 60px; background: transparent; outline: none; text-align: center; font-size: 13px; height: 22px; padding: 0; margin-right: 8px;" oninput="updatePaymentMethodValue()">
+                                        <input type="text" id="transfer_code" name="transfer_code" style="border: none; border-bottom: 1.5px solid #333; width: 60px; background: transparent; outline: none; text-align: center; font-size: 13px; height: 22px; padding: 0;" oninput="updatePaymentMethodValue()">
                                     </label>
                                 </div>
                             </td>
@@ -615,7 +574,7 @@
             </div>
         </div>
 
-        <!-- ================= PAGE 2 ================= -->
+        <!-- PAGE 2 -->
         <div class="page page2">
             <h2 class="terms-header">報名條款與家長同意書<br><span style="font-size: 13.5px; font-weight: 500; color: var(--text-sub); display: block; margin-top: 4px;">Terms & Conditions (Bobby English School Policies)</span></h2>
             
@@ -627,24 +586,24 @@
 
             <div class="terms-list">
                 <div class="term-item">
-                    <strong>1. 審閱權與退費規定 / Review Period & Refund Policy：</strong><br>
+                    <strong>1. 審閱權與退費規定 / Refund Policy：</strong><br>
                     依據「桃園市短期補習班退費管理自治條例」規定辦理。家長攜回審閱期至少五日。開課前30日前退費者，退還全額；開課前1日至29日退費者，退還90%；開課後5日內要求退費者，退還80%；上課未逾全期1/3期間內要求退費者，退還50%；超過全期1/3學期者不予退費。教材發放後亦不予退還。<br>
-                    <span style="color: var(--text-sub); display: block; margin-top: 3px;">Processed according to the Taoyuan City Supplementary Education Refund Regulations. Parents have a review period of at least 5 days. Full refund for cancellations 30+ days prior to start date; 90% refund for cancellations 1-29 days prior; 80% refund if requested within 5 days after start date; 50% refund if requested before reaching 1/3 of total course duration; no refunds after 1/3 of total course duration. Distributed learning materials are non-refundable.</span>
+                    <span style="color: var(--text-sub); display: block; margin-top: 4px;">Refunds are processed in accordance with the "Taoyuan Short-term Cram School Refund Management Regulations." Parents have at least a 5-day contract review period. A 100% refund is issued if requested 30 days prior to the course start date; a 90% refund if requested 1 to 29 days prior; an 80% refund within the first 5 days of class; a 50% refund if requested after the 6th day but before completing 1/3 of the total course duration. No refunds will be issued after 1/3 of the course duration has passed. No refunds on textbook or material fees once distributed.</span>
                 </div>
                 <div class="term-item">
-                    <strong>2. 請假與補課 / Leave & Make-up Lessons Policy：</strong><br>
+                    <strong>2. 請假與補課 / Leave & Make-up Lessons：</strong><br>
                     因事或病假缺席者，請於上課前兩小時透過官方 LINE 或電話完成請假。完成請假者，本班將提供一對一或小組補課、輔導。無故缺課者（曠課）不予補課與退費。<br>
-                    <span style="color: var(--text-sub); display: block; margin-top: 3px;">For personal or sick leave, please notify us via official LINE or phone at least two hours prior to class. Students with proper leave requests will receive one-on-one or small-group make-up sessions or tutoring. Unexcused absences (truancy) are non-refundable and not eligible for make-up lessons.</span>
+                    <span style="color: var(--text-sub); display: block; margin-top: 4px;">In case of sick leave or personal leave, please notify the school via our official LINE account or phone at least 2 hours before class. For validated absences, the school will arrange one-on-one or small-group make-up tutoring. No make-up lessons or refunds will be provided for unexcused absences (truancy).</span>
                 </div>
                 <div class="term-item">
                     <strong>3. 安全與公共責任 / Safety & Public Liability Insurance：</strong><br>
                     為維護學生安全，下課後請家長按時前來接送。本補習班公共安全設施、消防設備以及公共意外責任險均嚴格符合政府法令規範。<br>
-                    <span style="color: var(--text-sub); display: block; margin-top: 3px;">To ensure student safety, parents are requested to pick up children promptly after class. Our public safety infrastructure, fire equipment, and public liability insurance strictly comply with government regulations.</span>
+                    <span style="color: var(--text-sub); display: block; margin-top: 4px;">To ensure student safety, parents are requested to pick up their children on time after class. Our school's public safety facilities, fire safety equipment, and public liability insurance strictly comply with government laws and regulations.</span>
                 </div>
                 <div class="term-item">
                     <strong>4. 肖像權合理授權 / Portrait Rights Authorization：</strong><br>
                     家長同意本班在節慶活動、課堂成果中進行拍照或錄影，合理授權作為內部成果展示與官方推廣使用，且不損及學生名譽。<br>
-                    <span style="color: var(--text-sub); display: block; margin-top: 3px;">Parents consent to the taking of photos or videos during festive activities and classroom presentations, authorizing their reasonable use for internal achievement showcases and official promotional purposes without compromising student reputation.</span>
+                    <span style="color: var(--text-sub); display: block; margin-top: 3px;">Parents agree to allow the school to take photos or videos during holiday activities and class presentations. This constitutes a rational authorization for internal displays and official promotional use, ensuring that student reputation is fully protected.</span>
                 </div>
             </div>
 
@@ -684,7 +643,6 @@
         </div>
     </form>
 
-    <!-- 🌟 送出成功後的感謝與品牌文案卡片 -->
     <div id="successScreen">
         <div class="success-icon">🎉</div>
         <h2 class="success-title">報名資料已成功傳送！</h2>
@@ -711,19 +669,13 @@ var courseDatabase = {
 };
 
 var TARGET_COURSE = "Let's Go 5"; 
-
-var parentCanvas, staffCanvas;
-var parentCtx, staffCtx;
+var parentCanvas, staffCanvas, parentCtx, staffCtx;
 var isDrawingParent = false, isDrawingStaff = false;
-
-// 固定雙向 Pure GAS Web App API 節點
 var PURE_GAS_URL = "https://script.google.com/macros/s/AKfycbwr4AAm42X6bvPwEbp8tPhyc0N3js3zhicgkD5YGrnk5EnKmeGakB7FUIcCH98glKrwVA/exec";
 
-// 🎯 動態組合付款方式文字 (即時反映轉帳號碼)
 function updatePaymentMethodValue() {
     var transferRadio = document.getElementById('pay_transfer_radio');
     var codeInput = document.getElementById('transfer_code');
-    
     if (transferRadio && codeInput) {
         if (codeInput.value.trim() !== "") {
             transferRadio.checked = true;
@@ -734,7 +686,6 @@ function updatePaymentMethodValue() {
     }
 }
 
-// 🚀 Row-ID 超短網址全自動數據與圖片還原機制 (預覽與列印專用)
 function loadRowDataIfPresent() {
     var urlParams = new URLSearchParams(window.location.search);
     var rowIndex = urlParams.get('row');
@@ -752,39 +703,36 @@ function loadRowDataIfPresent() {
             document.getElementById('loadingOverlay').style.display = 'none';
             if (data && data.status === "success" && data.rowData) {
                 var row = data.rowData;
-                
-                // row 陣列精準對齊 LetsGo_Registration 21 欄位：
                 if (row[2]) document.getElementById('student_name_zh').value = row[2];
                 if (row[3]) document.getElementById('student_name_en').value = row[3];
                 if (row[4]) {
                     var gRadios = document.querySelectorAll('input[name="gender"]');
                     gRadios.forEach(function(r){ if(r.value === row[4]) r.checked = true; });
                 }
-                if (row[5]) // 🎯 終極防彈本地時區轉換器：只抓年月日，絕不被時區扣一天！
-if (row[5]) {
-    var rawDob = row[5].toString();
-    var formattedDob = "";
-    
-    // 如果帶有世界時間 T，先轉成台灣本地時間的 Date 物件
-    if (rawDob.indexOf('T') !== -1) {
-        var dObj = new Date(rawDob);
-        var y = dObj.getFullYear();
-        var m = String(dObj.getMonth() + 1).padStart(2, '0');
-        var d = String(dObj.getDate()).padStart(2, '0');
-        formattedDob = y + "-" + m + "-" + d;
-    } else if (rawDob.indexOf('/') !== -1) {
-        var parts = rawDob.split('/');
-        if (parts.length === 3) {
-            var y = parts[0];
-            var m = parts[1].padStart(2, '0');
-            var d = parts[2].padStart(2, '0');
-            formattedDob = y + "-" + m + "-" + d;
-        }
-    } else {
-        formattedDob = rawDob;
-    }
-    document.getElementById('dob').value = formattedDob;
-}
+
+                if (row[5]) {
+                    var rawDob = row[5].toString();
+                    var formattedDob = "";
+                    if (rawDob.indexOf('T') !== -1) {
+                        var dObj = new Date(rawDob);
+                        var y = dObj.getFullYear();
+                        var m = String(dObj.getMonth() + 1).padStart(2, '0');
+                        var d = String(dObj.getDate()).padStart(2, '0');
+                        formattedDob = y + "-" + m + "-" + d;
+                    } else if (rawDob.indexOf('/') !== -1) {
+                        var parts = rawDob.split('/');
+                        if (parts.length === 3) {
+                            var y = parts[0];
+                            var m = parts[1].padStart(2, '0');
+                            var d = parts[2].padStart(2, '0');
+                            formattedDob = y + "-" + m + "-" + d;
+                        }
+                    } else {
+                        formattedDob = rawDob;
+                    }
+                    document.getElementById('dob').value = formattedDob;
+                }
+
                 if (row[6]) document.getElementById('school_name').value = row[6];
                 if (row[7]) document.getElementById('grade_level').value = row[7];
                 if (row[8]) document.getElementById('parent_name').value = row[8];
@@ -794,17 +742,12 @@ if (row[5]) {
                 if (row[12]) document.getElementById('line_id').value = row[12];
                 if (row[13]) document.getElementById('address').value = row[13];
 
-                // 🎯 付款方式 (row[16]) 強效解碼與還原
                 if (row[16]) {
                     var payVal = row[16].toString();
                     var pRadios = document.querySelectorAll('input[name="payment_method"]');
-                    
                     if (payVal.indexOf('轉帳') !== -1) {
                         var transferRadio = document.getElementById('pay_transfer_radio');
-                        if (transferRadio) {
-                            transferRadio.checked = true;
-                            transferRadio.value = payVal;
-                        }
+                        if (transferRadio) { transferRadio.checked = true; transferRadio.value = payVal; }
                         var match = payVal.match(/\d+/);
                         if (match && document.getElementById('transfer_code')) {
                             document.getElementById('transfer_code').value = match[0];
@@ -814,32 +757,23 @@ if (row[5]) {
                     }
                 }
 
-                // 還原大頭照
                 if (row[17] && row[17].indexOf('http') === 0) {
-                    var pBox = document.getElementById('photoContainer');
-                    pBox.innerHTML = '<img src="' + row[17] + '" class="preview-img" alt="學員大頭照">';
+                    document.getElementById('photoContainer').innerHTML = '<img src="' + row[17] + '" class="preview-img" alt="學員大頭照">';
                 }
-                // 還原家長簽名檔
                 if (row[18] && row[18].indexOf('http') === 0) {
-                    var pSigBox = document.getElementById('parentSigContainer');
-                    pSigBox.innerHTML = '<img src="' + row[18] + '" class="sig-preview-img" alt="家長電子簽名">';
+                    document.getElementById('parentSigContainer').innerHTML = '<img src="' + row[18] + '" class="sig-preview-img" alt="家長電子簽名">';
                 }
-                // 還原經辦簽名檔
                 if (row[19] && row[19].indexOf('http') === 0) {
-                    var sSigBox = document.getElementById('staffSigContainer');
-                    sSigBox.innerHTML = '<img src="' + row[19] + '" class="sig-preview-img" alt="經辦人員簽名">';
+                    document.getElementById('staffSigContainer').innerHTML = '<img src="' + row[19] + '" class="sig-preview-img" alt="經辦簽名">';
                 }
 
-                // 預覽與列印模式下隱藏提交按鈕
                 if (document.getElementById('submitBtnContainer')) {
                     document.getElementById('submitBtnContainer').style.display = 'none';
                 }
 
                 calculateTuition();
 
-                if (autoPrint === 'true') {
-                    setTimeout(function() { window.print(); }, 800);
-                }
+                if (autoPrint === 'true') { setTimeout(function() { window.print(); }, 800); }
             }
         })
         .catch(function(err) {
@@ -867,13 +801,10 @@ window.onload = function() {
 function initSignaturePads() {
     parentCanvas = document.getElementById('parentSigPad');
     staffCanvas = document.getElementById('staffSigPad');
-    
     if (parentCanvas) setupCanvas(parentCanvas);
     if (staffCanvas) setupCanvas(staffCanvas);
-
     if (parentCanvas) parentCtx = parentCanvas.getContext('2d');
     if (staffCanvas) staffCtx = staffCanvas.getContext('2d');
-
     if (parentCanvas) setupPadEvents(parentCanvas, parentCtx, function(drawing) { isDrawingParent = drawing; });
     if (staffCanvas) setupPadEvents(staffCanvas, staffCtx, function(drawing) { isDrawingStaff = drawing; });
 }
@@ -885,71 +816,30 @@ function setupCanvas(canvas) {
 }
 
 function setupPadEvents(canvas, ctx, setDrawingState) {
-    function resetCtxStyle() {
-        ctx.strokeStyle = "#1b3d6d";
-        ctx.lineWidth = 2.5;
-        ctx.lineCap = "round";
-        ctx.lineJoin = "round";
-    }
-
+    function resetCtxStyle() { ctx.strokeStyle = "#1b3d6d"; ctx.lineWidth = 2.5; ctx.lineCap = "round"; ctx.lineJoin = "round"; }
     function getPos(e) {
         var rect = canvas.getBoundingClientRect();
         var clientX = e.clientX || (e.touches && e.touches[0].clientX);
         var clientY = e.clientY || (e.touches && e.touches[0].clientY);
         return { x: clientX - rect.left, y: clientY - rect.top };
     }
-
-    canvas.addEventListener('mousedown', function(e) {
-        setDrawingState(true);
-        resetCtxStyle();
-        var pos = getPos(e);
-        ctx.beginPath();
-        ctx.moveTo(pos.x, pos.y);
-    });
-
-    canvas.addEventListener('mousemove', function(e) {
-        if ((canvas.id === 'parentSigPad' && isDrawingParent) || (canvas.id === 'staffSigPad' && isDrawingStaff)) {
-            var pos = getPos(e);
-            ctx.lineTo(pos.x, pos.y);
-            ctx.stroke();
-        }
-    });
-
+    canvas.addEventListener('mousedown', function(e) { setDrawingState(true); resetCtxStyle(); var pos = getPos(e); ctx.beginPath(); ctx.moveTo(pos.x, pos.y); });
+    canvas.addEventListener('mousemove', function(e) { if ((canvas.id === 'parentSigPad' && isDrawingParent) || (canvas.id === 'staffSigPad' && isDrawingStaff)) { var pos = getPos(e); ctx.lineTo(pos.x, pos.y); ctx.stroke(); } });
     window.addEventListener('mouseup', function() { setDrawingState(false); });
-
-    canvas.addEventListener('touchstart', function(e) {
-        setDrawingState(true);
-        resetCtxStyle();
-        var pos = getPos(e);
-        ctx.beginPath();
-        ctx.moveTo(pos.x, pos.y);
-    }, { passive: true });
-
-    canvas.addEventListener('touchmove', function(e) {
-        if ((canvas.id === 'parentSigPad' && isDrawingParent) || (canvas.id === 'staffSigPad' && isDrawingStaff)) {
-            var pos = getPos(e);
-            ctx.lineTo(pos.x, pos.y);
-            ctx.stroke();
-        }
-    }, { passive: true });
-
+    canvas.addEventListener('touchstart', function(e) { setDrawingState(true); resetCtxStyle(); var pos = getPos(e); ctx.beginPath(); ctx.moveTo(pos.x, pos.y); }, { passive: true });
+    canvas.addEventListener('touchmove', function(e) { if ((canvas.id === 'parentSigPad' && isDrawingParent) || (canvas.id === 'staffSigPad' && isDrawingStaff)) { var pos = getPos(e); ctx.lineTo(pos.x, pos.y); ctx.stroke(); } }, { passive: true });
     canvas.addEventListener('touchend', function() { setDrawingState(false); });
 }
 
 function clearCanvas(canvasId) {
     var canvas = document.getElementById(canvasId);
-    if (canvas) {
-        var ctx = canvas.getContext('2d');
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-    }
+    if (canvas) { canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height); }
 }
 
 function isCanvasBlank(canvas) {
     if (!canvas) return true;
     var context = canvas.getContext('2d');
-    var pixelBuffer = new Uint32Array(
-        context.getImageData(0, 0, canvas.width, canvas.height).data.buffer
-    );
+    var pixelBuffer = new Uint32Array(context.getImageData(0, 0, canvas.width, canvas.height).data.buffer);
     return !pixelBuffer.some(function(color) { return color !== 0; });
 }
 
@@ -963,7 +853,6 @@ function calculateTuition() {
 
         if (courseDatabase[courseKey]) {
             var course = courseDatabase[courseKey];
-            
             labelDisplay.innerHTML = "<div class='course-id'>" + course.id + "</div><div class='course-zh'>" + course.zhName + "</div>";
             document.getElementById('class_time').value = "每週一三五 4:30-6:30 PM";
             
@@ -977,7 +866,6 @@ function calculateTuition() {
             var tuitionTotal = course.price * course.lessons; // 620 * 51 = 31,620
             var materialsTotal = course.materials;           // 1,612
             var miscTotal = course.misc * course.lessons;     // 60 * 51 = 3,060
-            
             var subTotal = tuitionTotal + materialsTotal + miscTotal;
             var finalTotal = Math.round(subTotal * discountRate);
 
@@ -990,19 +878,15 @@ function calculateTuition() {
             
             var discountStr = (discountRate * 10).toString();
             if (discountRate === 1.0) discountStr = "10";
-            
             var discountText = discountRate === 1.0 ? "未套用額外優惠（維持原價）" : "套用 " + discountStr + " 折";
-            var discountLabel = discountRate === 0.8 ? " <span style='color:red;'>(享8折特惠)</span>" : "";
 
-            calcPreview.innerHTML = "📚 <b>" + courseKey + " 費用明細與折扣說明" + discountLabel + "</b>：<br>" +
+            calcPreview.innerHTML = "📚 <b>" + courseKey + " 費用明細與折扣說明</b>：<br>" +
                                     "基本學費：$" + course.price + " × " + course.lessons + "堂 = $" + tuitionTotal.toLocaleString() + " | " +
                                     "原價教材費：$" + materialsTotal.toLocaleString() + " | " +
                                     "學雜費：$" + course.misc + " × " + course.lessons + "堂 = $" + miscTotal.toLocaleString() + "<br>" +
                                     "👉 <b>全項目（學費＋教材＋雜費）" + discountText + "後實際總計：NT$ " + finalTotal.toLocaleString() + " 元</b>";
         }
-    } catch (err) {
-        console.error("Tuition calculation error resolved:", err);
-    }
+    } catch (err) { console.error("Tuition error:", err); }
 }
 
 function processImageUpload(input) {
@@ -1014,19 +898,16 @@ function processImageUpload(input) {
             if (uploadText) uploadText.style.display = 'none';
             var oldImg = container.querySelector('.preview-img');
             if (oldImg) oldImg.remove();
-            
             var img = document.createElement('img');
             img.src = e.target.result;
             img.className = 'preview-img';
             container.appendChild(img);
-
             document.getElementById('student_photo_base64').value = e.target.result;
         };
         reader.readAsDataURL(input.files[0]);
     }
 }
 
-// 🚀 Pure GAS POST 傳送邏輯
 document.getElementById('enrollmentForm').addEventListener('submit', function(e) {
     e.preventDefault(); 
     var form = this;
@@ -1037,17 +918,14 @@ document.getElementById('enrollmentForm').addEventListener('submit', function(e)
         return;
     }
 
-    updatePaymentMethodValue(); // 確保送出前組合最完美的轉帳字串
+    updatePaymentMethodValue();
 
     if (parentCanvas) document.getElementById('parent_signature_base64').value = parentCanvas.toDataURL("image/png");
     if (!isCanvasBlank(staffCanvas)) {
         document.getElementById('staff_signature_base64').value = staffCanvas.toDataURL("image/png");
     }
 
-    if (submitBtn) {
-        submitBtn.disabled = true;
-        submitBtn.innerText = "正在傳送資料至巴比核心雲端資料庫...";
-    }
+    if (submitBtn) { submitBtn.disabled = true; submitBtn.innerText = "正在傳送資料至巴比核心雲端資料庫..."; }
     
     var formData = new FormData(form);
     var object = {};
